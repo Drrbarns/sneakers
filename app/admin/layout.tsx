@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import adminLogo from '../../black.png';
 
 export default function AdminLayout({
   children,
@@ -250,9 +252,8 @@ export default function AdminLayout({
         `}
       >
         <div className="h-full px-4 py-6 overflow-y-auto">
-          <Link href="/admin" className="flex items-center mb-8 px-2 cursor-pointer">
-            <span className="text-xl font-bold text-emerald-700">{storeName}</span>
-            <span className="ml-3 text-sm font-semibold text-gray-500">ADMIN</span>
+          <Link href="/admin" className="flex items-center mb-8 px-2 cursor-pointer" aria-label="Admin home">
+            <Image src={adminLogo} alt={storeName} className="h-9 w-auto object-contain" height={36} width={160} />
           </Link>
 
           <nav className="space-y-1">
@@ -318,14 +319,14 @@ export default function AdminLayout({
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center space-x-2 lg:space-x-3 px-2 lg:px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
                 >
-                  <div className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center bg-emerald-100 text-emerald-700 rounded-full font-semibold">
+                  <Image src={adminLogo} alt="" className="h-7 w-auto object-contain hidden sm:block" height={28} width={100} />
+                  <div className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center bg-emerald-100 text-emerald-700 rounded-full font-semibold flex-shrink-0">
                     {user?.email?.charAt(0).toUpperCase() || 'A'}
                   </div>
-                  <div className="text-left hidden md:block">
-                    <p className="text-sm font-semibold text-gray-900 capitalize">{userRole || 'Admin'}</p>
-                    <p className="text-xs text-gray-500 max-w-[100px] truncate">{user?.email}</p>
+                  <div className="text-left hidden md:block min-w-0">
+                    <p className="text-xs text-gray-500 truncate max-w-[120px]">{user?.email}</p>
                   </div>
-                  <i className="ri-arrow-down-s-line text-gray-600"></i>
+                  <i className="ri-arrow-down-s-line text-gray-600 flex-shrink-0"></i>
                 </button>
 
                 {showUserMenu && (
