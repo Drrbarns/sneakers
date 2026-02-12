@@ -210,6 +210,13 @@ export default function AdminDashboard() {
     'cancelled': 'bg-red-100 text-red-700'
   };
 
+  const statIconStyles: Record<string, string> = {
+    emerald: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    blue: 'bg-blue-100 text-blue-700 border-blue-200',
+    purple: 'bg-purple-100 text-purple-700 border-purple-200',
+    amber: 'bg-amber-100 text-amber-700 border-amber-200'
+  };
+
   const quickActions = [
     {
       title: 'Feature Modules',
@@ -230,7 +237,14 @@ export default function AdminDashboard() {
   ];
 
   if (loading) {
-    return <div className="p-8 text-center text-gray-500">Loading Dashboard...</div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-emerald-50/40 via-white to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600 font-medium">Loading dashboard…</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -238,31 +252,36 @@ export default function AdminDashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <p className="text-[11px] font-semibold tracking-[0.25em] text-emerald-700 uppercase mb-1">
+            <span className="inline-flex items-center rounded-full bg-emerald-100 text-emerald-800 px-3 py-1 text-[11px] font-semibold tracking-wider uppercase mb-2">
               Store overview
-            </p>
-            <h1 className="text-3xl font-extrabold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600 mt-1 text-sm">
-              Quick snapshot of revenue, orders and stock at Adjetman Sneakers.
+            </span>
+            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Dashboard</h1>
+            <p className="text-gray-600 mt-1 text-sm max-w-md">
+              Quick snapshot of revenue, orders and stock.
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+          {stats.map((stat, idx) => (
             <div
               key={stat.title}
-              className="bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-emerald-50 p-6 hover:shadow-md transition-shadow"
+              className={`relative overflow-hidden bg-white rounded-2xl shadow-sm border p-6 hover:shadow-md transition-all duration-200 ${
+                idx === 0 ? 'border-l-4 border-l-emerald-500 border border-emerald-50' : 'border-emerald-50'
+              }`}
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className={`w-12 h-12 flex items-center justify-center bg-${stat.color}-100 text-${stat.color}-700 rounded-lg`}>
-                  <i className={`${stat.icon} text-2xl`}></i>
+              {idx === 0 && (
+                <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+              )}
+              <div className="relative flex items-center justify-between mb-4">
+                <div className={`w-12 h-12 flex items-center justify-center rounded-xl border ${statIconStyles[stat.color] || statIconStyles.emerald}`}>
+                  <i className={`${stat.icon} text-2xl`} />
                 </div>
-                <span className={`text-sm font-semibold text-emerald-700`}>
+                <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
                   {stat.change}
                 </span>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-1 tabular-nums">{stat.value}</h3>
               <p className="text-gray-600 text-sm">{stat.title}</p>
             </div>
           ))}
@@ -270,11 +289,16 @@ export default function AdminDashboard() {
 
         {/* Revenue Chart & Quick Actions */}
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-2 bg-white/90 backdrop-blur p-6 rounded-2xl shadow-sm border border-emerald-50">
+          <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-emerald-50 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900">Revenue Trend</h2>
+              <div className="flex items-center gap-2">
+                <span className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                  <i className="ri-line-chart-line text-lg" />
+                </span>
+                <h2 className="text-xl font-bold text-gray-900">Revenue Trend</h2>
+              </div>
               <select
-                className="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block p-2"
+                className="bg-emerald-50 border border-emerald-100 text-emerald-800 text-sm font-medium rounded-full pl-4 pr-8 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
               >
@@ -304,66 +328,72 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="bg-emerald-50/60 p-6 rounded-2xl shadow-sm border border-emerald-50">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
-            <div className="space-y-3">
-              <Link href="/admin/products/new" className="flex items-center justify-between p-4 bg-gray-50 hover:bg-emerald-50 text-gray-700 hover:text-emerald-700 rounded-lg transition-colors group">
-                <div className="flex items-center font-medium">
-                  <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 group-hover:bg-emerald-100 transition-colors shadow-sm">
-                    <i className="ri-add-line"></i>
+          <div className="bg-gradient-to-br from-emerald-50 to-teal-50/50 p-6 rounded-2xl shadow-sm border border-emerald-100">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <i className="ri-flashlight-line text-emerald-600" />
+              Quick Actions
+            </h2>
+            <div className="space-y-2">
+              <Link href="/admin/products/new" className="flex items-center justify-between p-3.5 bg-white/80 hover:bg-white border border-emerald-100 hover:border-emerald-200 text-gray-800 hover:text-emerald-800 rounded-xl transition-all group shadow-sm hover:shadow">
+                <div className="flex items-center font-medium text-sm">
+                  <span className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 group-hover:bg-emerald-200 transition-colors">
+                    <i className="ri-add-line text-lg" />
                   </span>
                   Add Product
                 </div>
-                <i className="ri-arrow-right-line"></i>
+                <i className="ri-arrow-right-s-line text-gray-400 group-hover:text-emerald-600" />
               </Link>
-              <Link href="/admin/pos" className="flex items-center justify-between p-4 bg-gray-50 hover:bg-emerald-50 text-gray-700 hover:text-emerald-700 rounded-lg transition-colors group">
-                <div className="flex items-center font-medium">
-                  <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 group-hover:bg-emerald-100 transition-colors shadow-sm">
-                    <i className="ri-computer-line"></i>
+              <Link href="/admin/pos" className="flex items-center justify-between p-3.5 bg-white/80 hover:bg-white border border-emerald-100 hover:border-emerald-200 text-gray-800 hover:text-emerald-800 rounded-xl transition-all group shadow-sm hover:shadow">
+                <div className="flex items-center font-medium text-sm">
+                  <span className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 group-hover:bg-emerald-200 transition-colors">
+                    <i className="ri-computer-line text-lg" />
                   </span>
                   Open POS
                 </div>
-                <i className="ri-arrow-right-line"></i>
+                <i className="ri-arrow-right-s-line text-gray-400 group-hover:text-emerald-600" />
               </Link>
-              <Link href="/admin/orders" className="flex items-center justify-between p-4 bg-gray-50 hover:bg-emerald-50 text-gray-700 hover:text-emerald-700 rounded-lg transition-colors group">
-                <div className="flex items-center font-medium">
-                  <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3 group-hover:bg-emerald-100 transition-colors shadow-sm">
-                    <i className="ri-file-list-line"></i>
+              <Link href="/admin/orders" className="flex items-center justify-between p-3.5 bg-white/80 hover:bg-white border border-emerald-100 hover:border-emerald-200 text-gray-800 hover:text-emerald-800 rounded-xl transition-all group shadow-sm hover:shadow">
+                <div className="flex items-center font-medium text-sm">
+                  <span className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 group-hover:bg-emerald-200 transition-colors">
+                    <i className="ri-file-list-line text-lg" />
                   </span>
                   Manage Orders
                 </div>
-                <i className="ri-arrow-right-line"></i>
+                <i className="ri-arrow-right-s-line text-gray-400 group-hover:text-emerald-600" />
               </Link>
             </div>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-2 bg-white/90 backdrop-blur rounded-2xl shadow-sm border border-emerald-50 p-4 sm:p-6 overflow-hidden">
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-emerald-50 p-4 sm:p-6 overflow-hidden">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Recent Orders</h2>
-              <Link href="/admin/orders" className="text-emerald-700 hover:text-emerald-800 font-medium text-sm whitespace-nowrap cursor-pointer">
-                View All <i className="ri-arrow-right-line ml-1"></i>
+              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <i className="ri-shopping-bag-line text-emerald-600" />
+                Recent Orders
+              </h2>
+              <Link href="/admin/orders" className="text-emerald-700 hover:text-emerald-800 font-medium text-sm whitespace-nowrap cursor-pointer inline-flex items-center gap-1">
+                View All <i className="ri-arrow-right-line" />
               </Link>
             </div>
 
-            <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+            <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 rounded-xl border border-gray-100">
               {recentOrders.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">No recent orders.</p>
+                <p className="text-gray-500 text-center py-8">No recent orders.</p>
               ) : (
                 <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
+                  <thead className="bg-emerald-50/50 border-b border-emerald-100">
                     <tr>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Order ID</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Customer</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Date</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Total</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Status</th>
+                      <th className="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Order</th>
+                      <th className="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Customer</th>
+                      <th className="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                      <th className="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Total</th>
+                      <th className="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {recentOrders.map((order) => (
-                      <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    {recentOrders.map((order, i) => (
+                      <tr key={order.id} className={`border-b border-gray-50 hover:bg-emerald-50/30 transition-colors ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
                         <td className="py-4 px-4">
                           <Link href={`/admin/orders/${order.id}`} className="text-emerald-700 hover:text-emerald-800 font-medium whitespace-nowrap cursor-pointer">
                             {order.displayId}
@@ -389,14 +419,21 @@ export default function AdminDashboard() {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-white/90 backdrop-blur rounded-2xl shadow-sm border border-emerald-50 p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Low Stock Alert</h2>
+            <div className={`rounded-2xl shadow-sm border p-6 ${
+              lowStockProducts.length === 0
+                ? 'bg-white border-emerald-50'
+                : 'bg-white border-amber-100 border-l-4 border-l-amber-400'
+            }`}>
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <i className={`${lowStockProducts.length === 0 ? 'ri-checkbox-circle-line text-emerald-600' : 'ri-error-warning-line text-amber-600'}`} />
+                Low Stock Alert
+              </h2>
               {lowStockProducts.length === 0 ? (
-                <p className="text-gray-500">Inventory looks good!</p>
+                <p className="text-gray-500 text-sm">Inventory looks good!</p>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {lowStockProducts.map((product, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
                       <div className="flex-1">
                         <p className="font-medium text-gray-900 text-sm truncate pr-2">{product.name}</p>
                         <p className="text-xs text-gray-600 mt-1">Stock: {product.stock} units</p>
@@ -416,31 +453,35 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white/90 backdrop-blur rounded-2xl shadow-sm border border-emerald-50 p-4 sm:p-6 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-emerald-50 p-4 sm:p-6 overflow-hidden">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900">Products</h2>
-            <Link href="/admin/products" className="text-emerald-700 hover:text-emerald-800 font-medium text-sm whitespace-nowrap cursor-pointer">
-              View All <i className="ri-arrow-right-line ml-1"></i>
+            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <i className="ri-box-3-line text-emerald-600" />
+              Products
+            </h2>
+            <Link href="/admin/products" className="text-emerald-700 hover:text-emerald-800 font-medium text-sm whitespace-nowrap cursor-pointer inline-flex items-center gap-1">
+              View All <i className="ri-arrow-right-line" />
             </Link>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {topProducts.map((product) => (
-              <div
+              <Link
                 key={product.id}
-                className="border border-emerald-50 rounded-2xl p-4 hover:shadow-md transition-shadow bg-white"
+                href={`/admin/products/${product.id}`}
+                className="border border-emerald-50 rounded-2xl p-4 hover:shadow-md hover:border-emerald-200 transition-all bg-white group"
               >
-                <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden mb-3">
+                <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden mb-3 ring-1 ring-black/5 group-hover:ring-emerald-200 transition-shadow">
                   <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
-                <div className="mt-3 pt-3 border-t border-gray-200 flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Stock: {product.stock}</span>
-                  <Link href={`/admin/products/${product.id}`} className="text-emerald-700 hover:text-emerald-800 text-sm font-medium whitespace-nowrap cursor-pointer">
-                    Edit <i className="ri-arrow-right-line ml-1"></i>
-                  </Link>
+                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm">{product.name}</h3>
+                <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
+                  <span className="text-xs text-gray-500">Stock: {product.stock}</span>
+                  <span className="text-emerald-600 text-sm font-medium group-hover:text-emerald-700 inline-flex items-center gap-0.5">
+                    Edit <i className="ri-arrow-right-line text-sm" />
+                  </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
