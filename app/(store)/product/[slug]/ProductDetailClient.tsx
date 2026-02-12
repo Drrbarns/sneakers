@@ -276,25 +276,25 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
       <StructuredData data={breadcrumbSchema} />
 
       <main className="min-h-screen bg-white">
-        <section className="py-8 bg-gray-50 border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <nav className="flex items-center space-x-2 text-sm flex-wrap gap-y-2">
-              <Link href="/" className="text-gray-600 hover:text-emerald-700 transition-colors">Home</Link>
-              <i className="ri-arrow-right-s-line text-gray-400"></i>
-              <Link href="/shop" className="text-gray-600 hover:text-emerald-700 transition-colors">Shop</Link>
-              <i className="ri-arrow-right-s-line text-gray-400"></i>
-              <Link href="#" className="text-gray-600 hover:text-emerald-700 transition-colors">{product.category}</Link>
-              <i className="ri-arrow-right-s-line text-gray-400"></i>
-              <span className="text-gray-900 font-medium truncate max-w-[200px]">{product.name}</span>
+        <section className="py-4 sm:py-6 border-b border-emerald-50 bg-gray-50/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-600">
+              <Link href="/" className="hover:text-emerald-700 transition-colors">Home</Link>
+              <i className="ri-arrow-right-s-line text-gray-400 text-sm" />
+              <Link href="/shop" className="hover:text-emerald-700 transition-colors">Shop</Link>
+              <i className="ri-arrow-right-s-line text-gray-400 text-sm" />
+              <Link href={`/shop?category=${product.category?.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-emerald-700 transition-colors">{product.category}</Link>
+              <i className="ri-arrow-right-s-line text-gray-400 text-sm" />
+              <span className="text-gray-900 font-medium truncate max-w-[180px] sm:max-w-[240px]">{product.name}</span>
             </nav>
           </div>
         </section>
 
-        <section className="py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="grid lg:grid-cols-2 gap-12">
+        <section className="py-8 sm:py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
               <div>
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 mb-4 shadow-lg border border-gray-100">
+                <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 border border-emerald-50 mb-4">
                   <Image
                     src={product.images[selectedImage]}
                     alt={product.name}
@@ -305,19 +305,19 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                     quality={80}
                   />
                   {discount > 0 && (
-                    <span className="absolute top-6 right-6 bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-full">
+                    <span className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-red-500 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full">
                       Save {discount}%
                     </span>
                   )}
                 </div>
 
                 {product.images.length > 1 && (
-                  <div className="grid grid-cols-4 gap-4">
+                  <div className="grid grid-cols-4 gap-2 sm:gap-4">
                     {product.images.map((image: string, index: number) => (
                       <button
                         key={index}
                         onClick={() => setSelectedImage(index)}
-                        className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${selectedImage === index ? 'border-emerald-700 shadow-md' : 'border-gray-200 hover:border-gray-300'
+                        className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${selectedImage === index ? 'border-emerald-600 ring-2 ring-emerald-200' : 'border-emerald-50 hover:border-emerald-200'
                           }`}
                       >
                         <Image
@@ -335,32 +335,34 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
               </div>
 
               <div>
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <p className="text-sm text-emerald-700 font-semibold mb-2">{product.category}</p>
-                    <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{product.name}</h1>
-                  </div>
+                <p className="text-xs font-semibold tracking-[0.2em] text-emerald-600 uppercase mb-1">
+                  {product.category}
+                </p>
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight">
+                    {product.name}
+                  </h1>
                   <button
                     onClick={() => setIsWishlisted(!isWishlisted)}
-                    className="w-12 h-12 flex items-center justify-center border-2 border-gray-200 hover:border-emerald-700 rounded-full transition-colors cursor-pointer"
+                    className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full border-2 border-gray-200 hover:border-emerald-600 transition-colors cursor-pointer"
+                    aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
                   >
-                    <i className={`${isWishlisted ? 'ri-heart-fill text-red-600' : 'ri-heart-line text-gray-700'} text-xl`}></i>
+                    <i className={`${isWishlisted ? 'ri-heart-fill text-red-500' : 'ri-heart-line text-gray-600'} text-lg`} />
                   </button>
                 </div>
-
-                <div className="flex items-center mb-6">
-                  <div className="flex items-center space-x-1 mr-3">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="flex items-center gap-0.5">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <i
                         key={star}
-                        className={`${star <= Math.round(product.rating) ? 'ri-star-fill text-amber-400' : 'ri-star-line text-gray-300'} text-lg`}
-                      ></i>
+                        className={`${star <= Math.round(product.rating) ? 'ri-star-fill text-amber-400' : 'ri-star-line text-gray-300'} text-base`}
+                      />
                     ))}
                   </div>
-                  <span className="text-gray-700 font-medium">{Number(product.rating).toFixed(1)}</span>
+                  <span className="text-sm text-gray-600">{Number(product.rating).toFixed(1)}</span>
                 </div>
 
-                <div className="flex items-baseline space-x-4 mb-6">
+                <div className="flex items-baseline gap-3 mb-6">
                   {hasVariants && !selectedVariant ? (
                     <span className="text-3xl lg:text-4xl font-bold text-gray-900">
                       From GH₵{minVariantPrice.toFixed(2)}
@@ -583,41 +585,53 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <div className="flex flex-col sm:flex-row gap-3 mb-6">
                   <button
                     disabled={activeStock === 0 || needsVariantSelection || needsColorSelection}
-                    className={`flex-1 bg-gray-900 hover:bg-emerald-700 text-white py-4 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2 text-lg whitespace-nowrap cursor-pointer ${(activeStock === 0 || needsVariantSelection || needsColorSelection) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`flex-1 rounded-xl py-3.5 font-semibold text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer ${
+                      activeStock === 0 || needsVariantSelection || needsColorSelection
+                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                    }`}
                     onClick={handleAddToCart}
                   >
-                    <i className="ri-shopping-cart-line text-xl"></i>
-                    <span>{activeStock === 0 ? 'Out of Stock' : needsColorSelection ? 'Select a Color' : needsVariantSelection ? 'Select a Variant' : 'Add to Cart'}</span>
+                    <i className="ri-shopping-cart-line text-lg" />
+                    <span>
+                      {activeStock === 0
+                        ? 'Out of stock'
+                        : needsColorSelection
+                          ? 'Select a color'
+                          : needsVariantSelection
+                            ? 'Select options'
+                            : 'Add to cart'}
+                    </span>
                   </button>
                   {activeStock > 0 && !needsVariantSelection && !needsColorSelection && (
                     <button
                       onClick={handleBuyNow}
-                      className="sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white px-8 py-4 rounded-lg font-semibold transition-colors whitespace-nowrap cursor-pointer"
+                      className="rounded-xl border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 px-6 py-3.5 font-semibold text-sm transition-colors whitespace-nowrap cursor-pointer"
                     >
-                      Buy Now
+                      Buy now
                     </button>
                   )}
                 </div>
 
-                <div className="border-t border-gray-200 pt-6 space-y-4">
-                  <div className="flex items-center text-gray-700">
-                    <i className="ri-store-2-line text-xl text-emerald-700 mr-3"></i>
+                <div className="rounded-2xl border border-emerald-50 bg-emerald-50/30 p-4 space-y-3">
+                  <div className="flex items-center gap-3 text-sm text-gray-700">
+                    <i className="ri-store-2-line text-emerald-600 text-lg" />
                     <span>Free store pickup available</span>
                   </div>
-                  <div className="flex items-center text-gray-700">
-                    <i className="ri-arrow-left-right-line text-xl text-emerald-700 mr-3"></i>
-                    <span>30-day easy returns and exchanges</span>
+                  <div className="flex items-center gap-3 text-sm text-gray-700">
+                    <i className="ri-arrow-left-right-line text-emerald-600 text-lg" />
+                    <span>30-day easy returns</span>
                   </div>
-                  <div className="flex items-center text-gray-700">
-                    <i className="ri-shield-check-line text-xl text-emerald-700 mr-3"></i>
-                    <span>Secure payment & buyer protection</span>
+                  <div className="flex items-center gap-3 text-sm text-gray-700">
+                    <i className="ri-shield-check-line text-emerald-600 text-lg" />
+                    <span>Secure payment</span>
                   </div>
                   {product.sku && (
-                    <div className="flex items-center text-gray-700">
-                      <i className="ri-barcode-line text-xl text-emerald-700 mr-3"></i>
+                    <div className="flex items-center gap-3 text-sm text-gray-700">
+                      <i className="ri-barcode-line text-emerald-600 text-lg" />
                       <span>SKU: {product.sku}</span>
                     </div>
                   )}
@@ -627,18 +641,19 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           </div>
         </section>
 
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="border-b border-gray-300 mb-8">
-              <div className="flex space-x-8">
+        <section className="py-10 sm:py-14 bg-gray-50/50 border-t border-emerald-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="border-b border-emerald-100 mb-6">
+              <div className="flex flex-wrap gap-4 sm:gap-6">
                 {['description', 'features', 'care', 'reviews'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`pb-4 font-semibold transition-colors relative whitespace-nowrap cursor-pointer ${activeTab === tab
-                      ? 'text-emerald-700 border-b-2 border-emerald-700'
-                      : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                    className={`pb-3 font-medium text-sm transition-colors whitespace-nowrap cursor-pointer border-b-2 -mb-px ${
+                      activeTab === tab
+                        ? 'text-emerald-700 border-emerald-600'
+                        : 'text-gray-500 hover:text-gray-700 border-transparent'
+                    }`}
                   >
                     {tab.charAt(0).toUpperCase() + tab.slice(1)}
                   </button>
@@ -647,19 +662,19 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
             </div>
 
             {activeTab === 'description' && (
-              <div className="prose max-w-none">
-                <p className="text-gray-700 text-lg leading-relaxed">{product.description}</p>
+              <div className="rounded-2xl border border-emerald-50 bg-white p-6">
+                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{product.description}</p>
               </div>
             )}
 
             {activeTab === 'features' && (
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Features</h3>
-                <ul className="grid md:grid-cols-2 gap-4">
+              <div className="rounded-2xl border border-emerald-50 bg-white p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Key features</h3>
+                <ul className="grid sm:grid-cols-2 gap-3">
                   {product.features.map((feature: string, index: number) => (
-                    <li key={index} className="flex items-start">
-                      <i className="ri-checkbox-circle-fill text-emerald-700 text-xl mr-3 mt-1"></i>
-                      <span className="text-gray-700 text-lg">{feature}</span>
+                    <li key={index} className="flex items-start gap-2">
+                      <i className="ri-checkbox-circle-fill text-emerald-600 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700 text-sm sm:text-base">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -667,14 +682,14 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
             )}
 
             {activeTab === 'care' && (
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Care Instructions</h3>
-                <p className="text-gray-700 text-lg leading-relaxed">{product.care}</p>
+              <div className="rounded-2xl border border-emerald-50 bg-white p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Care instructions</h3>
+                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{product.care}</p>
               </div>
             )}
 
             {activeTab === 'reviews' && (
-              <div id="reviews">
+              <div id="reviews" className="rounded-2xl border border-emerald-50 bg-white p-6">
                 <ProductReviews productId={product.id} />
               </div>
             )}
@@ -682,14 +697,19 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
         </section>
 
         {relatedProducts.length > 0 && (
-          <section className="py-20 bg-white" data-product-shop>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">You May Also Like</h2>
-                <p className="text-lg text-gray-600">Curated recommendations based on this product</p>
-              </div>
+          <section className="py-10 sm:py-14 bg-white" data-product-shop>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <p className="text-xs font-semibold tracking-[0.25em] text-emerald-600 uppercase mb-2 text-center">
+                You may also like
+              </p>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-2 text-center">
+                More from this collection
+              </h2>
+              <p className="text-sm text-gray-600 mb-8 text-center max-w-md mx-auto">
+                Curated picks based on this product
+              </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {relatedProducts.map((p) => (
                   <ProductCard key={p.id} {...p} />
                 ))}

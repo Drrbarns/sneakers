@@ -58,216 +58,224 @@ export default function CartPage() {
   const total = subtotal - couponDiscount + shipping;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <PageHero title="Shopping Cart" />
-      <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
+      <div className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <CartCountdown />
-        {/* <FreeShippingBar currentAmount={subtotal} threshold={200} /> */}
 
         {cartItems.length === 0 && savedItems.length === 0 ? (
-          <section className="py-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-              <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 bg-gray-200 rounded-full">
-                <i className="ri-shopping-cart-line text-5xl text-gray-400"></i>
+          <section className="py-12 sm:py-20">
+            <div className="max-w-md mx-auto text-center">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-6 rounded-2xl bg-emerald-50 border border-emerald-100">
+                <i className="ri-shopping-cart-line text-4xl sm:text-5xl text-emerald-600" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Your cart is empty</h2>
-              <p className="text-gray-600 mb-8 text-lg">Looks like you&#39;t added anything to your cart yet</p>
-              <Link href="/shop" className="inline-block bg-gray-900 hover:bg-emerald-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors whitespace-nowrap">
-                Continue Shopping
+              <p className="text-xs font-semibold tracking-[0.25em] text-emerald-600 uppercase mb-2">Your cart</p>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3">Your cart is empty</h2>
+              <p className="text-gray-600 mb-8 text-sm sm:text-base">
+                You haven&apos;t added anything yet. Find your next pair in the shop.
+              </p>
+              <Link
+                href="/shop"
+                className="inline-flex items-center rounded-full bg-emerald-600 text-white px-8 py-3.5 text-sm font-semibold hover:bg-emerald-700 transition-colors"
+              >
+                Continue shopping
+                <i className="ri-arrow-right-line ml-2" />
               </Link>
             </div>
           </section>
         ) : (
-          <section className="py-12">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <div className="grid lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-6">
-                  <div className="bg-white rounded-xl shadow-sm p-6 overflow-hidden">
-                    <div className="flex items-center justify-between mb-6">
-                      <h2 className="text-2xl font-bold text-gray-900">Cart Items ({cartItems.length})</h2>
-                      {savings > 0 && (
-                        <span className="text-emerald-700 font-semibold">You save GH₵{savings.toFixed(2)}</span>
-                      )}
-                    </div>
-
-                    <div className="space-y-6">
-                      {cartItems.map((item) => (
-                        <div key={`${item.id}-${item.variant || ''}`} className="flex flex-col sm:flex-row gap-4 sm:gap-6 pb-6 border-b border-gray-200 last:border-0 last:pb-0">
-                          <Link href={`/product/${item.slug || item.id}`} className="relative w-full sm:w-32 h-48 sm:h-32 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-                            <Image src={item.image} alt={item.name} fill className="object-cover object-top" sizes="(max-width: 640px) 100vw, 128px" quality={70} />
-                          </Link>
-
-                          <div className="flex-1">
-                            <div className="flex justify-between mb-2">
-                              <Link href={`/product/${item.slug || item.id}`} className="text-lg font-semibold text-gray-900 hover:text-emerald-700 transition-colors line-clamp-2">
-                                {item.name}
-                              </Link>
+          <section className="py-6 sm:py-10">
+            <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+              <div className="lg:col-span-2">
+                <div className="rounded-2xl border border-emerald-50 bg-gray-50/50 p-4 sm:p-6 overflow-hidden">
+                  <div className="flex items-center justify-between mb-4 sm:mb-6">
+                    <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+                      Cart items ({cartItems.length})
+                    </h2>
+                    {savings > 0 && (
+                      <span className="text-sm font-semibold text-emerald-700">
+                        You save GH₵{savings.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="space-y-4 sm:space-y-6">
+                    {cartItems.map((item) => (
+                      <div
+                        key={`${item.id}-${item.variant || ''}`}
+                        className="flex flex-col sm:flex-row gap-4 pb-4 sm:pb-6 border-b border-emerald-100 last:border-0 last:pb-0"
+                      >
+                        <Link
+                          href={`/product/${item.slug || item.id}`}
+                          className="relative w-full sm:w-28 h-40 sm:h-28 flex-shrink-0 rounded-xl bg-white border border-emerald-50 overflow-hidden"
+                        >
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            className="object-cover object-top"
+                            sizes="(max-width: 640px) 100vw, 112px"
+                            quality={70}
+                          />
+                        </Link>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex justify-between gap-2 mb-1">
+                            <Link
+                              href={`/product/${item.slug || item.id}`}
+                              className="font-semibold text-gray-900 hover:text-emerald-700 transition-colors line-clamp-2 text-sm sm:text-base"
+                            >
+                              {item.name}
+                            </Link>
+                            <button
+                              onClick={() => removeFromCart(item.id, item.variant)}
+                              className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                              aria-label="Remove item"
+                            >
+                              <i className="ri-close-line text-xl" />
+                            </button>
+                          </div>
+                          {item.variant && (
+                            <p className="text-xs text-gray-500 mb-2">Variant: {item.variant}</p>
+                          )}
+                          <p className="text-xs text-emerald-600 font-medium mb-3">In stock</p>
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <span className="text-base sm:text-lg font-bold text-gray-900">
+                              GH₵{item.price.toFixed(2)}
+                            </span>
+                            <div className="flex items-center border border-gray-200 rounded-xl bg-white">
                               <button
-                                onClick={() => removeFromCart(item.id, item.variant)}
-                                className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-600 transition-colors"
+                                onClick={() => updateQuantity(item.id, item.quantity - 1, item.variant)}
+                                className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-gray-50 rounded-l-xl transition-colors"
+                                title={item.quantity <= (item.moq || 1) ? 'Remove item' : 'Decrease'}
                               >
-                                <i className="ri-close-line text-xl"></i>
+                                {item.quantity <= (item.moq || 1) ? (
+                                  <i className="ri-delete-bin-line text-red-500 text-sm" />
+                                ) : (
+                                  <i className="ri-subtract-line" />
+                                )}
+                              </button>
+                              <input
+                                type="number"
+                                value={item.quantity}
+                                onChange={(e) =>
+                                  updateQuantity(
+                                    item.id,
+                                    parseInt(e.target.value) || (item.moq || 1),
+                                    item.variant
+                                  )
+                                }
+                                className="w-11 h-9 text-center border-x border-gray-200 text-sm font-semibold focus:outline-none"
+                                min={item.moq || 1}
+                                max={item.maxStock}
+                              />
+                              <button
+                                onClick={() => updateQuantity(item.id, item.quantity + 1, item.variant)}
+                                className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-gray-50 rounded-r-xl transition-colors"
+                              >
+                                <i className="ri-add-line" />
                               </button>
                             </div>
+                          </div>
+                          {(item.moq || 1) > 1 && (
+                            <p className="text-xs text-amber-600 mt-2">Min. order: {item.moq} units</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-                            <div className="text-sm text-gray-600 mb-3 space-y-1">
-                              {item.variant && <p>Variant: {item.variant}</p>}
-                              {/* Stock status assuming always available if in cart for now */}
-                              <p className="text-emerald-600 font-medium">In Stock</p>
-                            </div>
-
-                            <div className="flex items-center justify-between flex-wrap gap-4">
-                              <div className="flex items-baseline space-x-3">
-                                <span className="text-xl font-bold text-gray-900">GH₵{item.price.toFixed(2)}</span>
-                              </div>
-
-                              <div className="flex items-center space-x-4">
-                                <div className="flex flex-col">
-                                  <div className="flex items-center border-2 border-gray-300 rounded-lg">
-                                    <button
-                                      onClick={() => updateQuantity(item.id, item.quantity - 1, item.variant)}
-                                      className="w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
-                                      title={item.quantity <= (item.moq || 1) ? 'Remove item' : 'Decrease quantity'}
-                                    >
-                                      {item.quantity <= (item.moq || 1) ? (
-                                        <i className="ri-delete-bin-line text-red-500"></i>
-                                      ) : (
-                                        <i className="ri-subtract-line"></i>
-                                      )}
-                                    </button>
-                                    <input
-                                      type="number"
-                                      value={item.quantity}
-                                      onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || (item.moq || 1), item.variant)}
-                                      className="w-12 h-10 text-center border-x-2 border-gray-300 focus:outline-none font-semibold"
-                                      min={item.moq || 1}
-                                      max={item.maxStock}
-                                    />
-                                    <button
-                                      onClick={() => updateQuantity(item.id, item.quantity + 1, item.variant)}
-                                      className="w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
-                                    >
-                                      <i className="ri-add-line"></i>
-                                    </button>
-                                  </div>
-                                  {(item.moq || 1) > 1 && (
-                                    <span className="text-xs text-amber-600 mt-1">
-                                      Min. order: {item.moq} units
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Saved for later functionality temporarily disabled until fully implemented with Context integration if requested */}
-                            {/*
-                            <button
-                              onClick={() => saveForLater(item.id)}
-                              className="mt-3 text-sm text-emerald-700 hover:text-emerald-900 font-medium whitespace-nowrap"
-                            >
-                              Save for Later
-                            </button>
-                            */}
+                {savedItems.length > 0 && (
+                  <div className="mt-6 rounded-2xl border border-emerald-50 bg-gray-50/50 p-4 sm:p-6">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">
+                      Saved for later ({savedItems.length})
+                    </h3>
+                    <div className="space-y-4">
+                      {savedItems.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex gap-4 pb-4 border-b border-emerald-100 last:border-0 last:pb-0"
+                        >
+                          <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-xl bg-white border border-emerald-50 overflow-hidden">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              className="object-cover object-top"
+                              sizes="80px"
+                              quality={60}
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-gray-900 text-sm truncate">{item.name}</p>
+                            <p className="text-sm font-bold text-gray-900">GH₵{item.price.toFixed(2)}</p>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
+                )}
+              </div>
 
-                  {savedItems.length > 0 && (
-                    <div className="bg-white rounded-xl shadow-sm p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-4">Saved for Later ({savedItems.length})</h3>
-                      <div className="space-y-4">
-                        {savedItems.map((item) => (
-                          <div key={item.id} className="flex gap-4 pb-4 border-b border-gray-200 last:border-0 last:pb-0">
-                            <div className="relative w-20 h-20 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-                              <Image src={item.image} alt={item.name} fill className="object-cover object-top" sizes="80px" quality={60} />
-                            </div>
-                            <div className="flex-1">
-                              <p className="font-semibold text-gray-900 mb-1">{item.name}</p>
-                              <p className="text-lg font-bold text-gray-900 mb-2">GH₵{item.price.toFixed(2)}</p>
-                              {/* Move to cart disabled for now */}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+              <div className="lg:col-span-1">
+                <div className="rounded-2xl border border-emerald-50 bg-gray-50/50 p-4 sm:p-6 sticky top-24">
+                  <p className="text-xs font-semibold tracking-[0.2em] text-emerald-600 uppercase mb-2">
+                    Summary
+                  </p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">Order summary</h3>
+                  <div className="space-y-3 mb-4">
+                    <div className="flex justify-between text-sm text-gray-700">
+                      <span>Subtotal</span>
+                      <span className="font-semibold">GH₵{subtotal.toFixed(2)}</span>
                     </div>
-                  )}
-                </div>
-
-                <div className="space-y-6">
-                  <div className="bg-white rounded-xl shadow-sm p-6 sticky top-24">
-                    <h3 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h3>
-
-                    <div className="space-y-4 mb-6">
-                      <div className="flex justify-between text-gray-700">
-                        <span>Subtotal</span>
-                        <span className="font-semibold">GH₵{subtotal.toFixed(2)}</span>
+                    {appliedCoupon && (
+                      <div className="flex justify-between text-sm text-emerald-700">
+                        <span>Coupon ({appliedCoupon.code})</span>
+                        <span className="font-semibold">-GH₵{couponDiscount.toFixed(2)}</span>
                       </div>
-
-                      {appliedCoupon && (
-                        <div className="flex justify-between text-emerald-700">
-                          <div className="flex items-center space-x-2">
-                            <span>Coupon ({appliedCoupon.code})</span>
-                          </div>
-                          <span className="font-semibold">-GH₵{couponDiscount.toFixed(2)}</span>
-                        </div>
-                      )}
-
-                      <div className="flex justify-between text-gray-700">
-                        <span>Shipping</span>
-                        <span className="font-semibold">{shipping === 0 ? 'FREE' : `GH₵${shipping.toFixed(2)}`}</span>
-                      </div>
-
-                      {shipping > 0 && (
-                        <p className="text-sm text-amber-600">
-                          {/* Shipping threshold text removed */}
-                        </p>
-                      )}
+                    )}
+                    <div className="flex justify-between text-sm text-gray-700">
+                      <span>Shipping</span>
+                      <span className="font-semibold">
+                        {shipping === 0 ? 'FREE' : `GH₵${shipping.toFixed(2)}`}
+                      </span>
                     </div>
-
-                    <div className="border-t border-gray-200 pt-4 mb-6">
-                      <div className="flex justify-between text-xl font-bold text-gray-900">
-                        <span>Total</span>
-                        <span>GH₵{total.toFixed(2)}</span>
-                      </div>
+                  </div>
+                  <div className="border-t border-emerald-100 pt-4 mb-4">
+                    <div className="flex justify-between text-base font-bold text-gray-900">
+                      <span>Total</span>
+                      <span>GH₵{total.toFixed(2)}</span>
                     </div>
-
-                    <AdvancedCouponSystem
-                      subtotal={subtotal}
-                      onApply={applyCoupon}
-                      onRemove={removeCoupon}
-                      appliedCoupon={appliedCoupon}
-                    />
-
-                    <Link
-                      href="/checkout"
-                      className="block w-full bg-emerald-700 hover:bg-emerald-800 text-white py-4 rounded-lg font-semibold text-center transition-colors mt-6 mb-3 whitespace-nowrap"
-                    >
-                      Proceed to Checkout
-                    </Link>
-
-                    <Link
-                      href="/shop"
-                      className="block w-full text-center text-emerald-700 hover:text-emerald-900 font-semibold py-2 whitespace-nowrap"
-                    >
-                      Continue Shopping
-                    </Link>
-
-                    <div className="mt-6 pt-6 border-t border-gray-200 space-y-3">
-                      <div className="flex items-center text-sm text-gray-600">
-                        <i className="ri-shield-check-line text-emerald-700 mr-2"></i>
-                        <span>Secure checkout</span>
-                      </div>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <i className="ri-arrow-left-right-line text-emerald-700 mr-2"></i>
-                        <span>30-day returns</span>
-                      </div>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <i className="ri-customer-service-line text-emerald-700 mr-2"></i>
-                        <span>24/7 support</span>
-                      </div>
+                  </div>
+                  <AdvancedCouponSystem
+                    subtotal={subtotal}
+                    onApply={applyCoupon}
+                    onRemove={removeCoupon}
+                    appliedCoupon={appliedCoupon}
+                  />
+                  <Link
+                    href="/checkout"
+                    className="mt-4 block w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 font-semibold text-center text-sm transition-colors"
+                  >
+                    Proceed to checkout
+                  </Link>
+                  <Link
+                    href="/shop"
+                    className="mt-3 block w-full text-center text-emerald-700 hover:text-emerald-800 font-semibold text-sm py-2"
+                  >
+                    Continue shopping
+                  </Link>
+                  <div className="mt-6 pt-6 border-t border-emerald-100 space-y-2">
+                    <div className="flex items-center gap-2 text-xs text-gray-600">
+                      <i className="ri-shield-check-line text-emerald-600" />
+                      <span>Secure checkout</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-600">
+                      <i className="ri-arrow-left-right-line text-emerald-600" />
+                      <span>30-day returns</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-600">
+                      <i className="ri-customer-service-line text-emerald-600" />
+                      <span>Support when you need it</span>
                     </div>
                   </div>
                 </div>
