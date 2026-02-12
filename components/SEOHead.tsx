@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.adjetmansneakers.com';
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
 
 interface SEOProps {
@@ -109,7 +109,7 @@ export function generateMetadata({
   return metadata;
 }
 
-const SITE_URL_SCHEMA = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+const SITE_URL_SCHEMA = process.env.NEXT_PUBLIC_APP_URL || 'https://www.adjetmansneakers.com';
 
 export function generateProductSchema(product: {
   name: string;
@@ -180,7 +180,7 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 }
 
 export function generateOrganizationSchema(logoUrl?: string) {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.adjetmansneakers.com';
   const name = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
   return {
     '@context': 'https://schema.org',
@@ -200,7 +200,7 @@ export function generateOrganizationSchema(logoUrl?: string) {
 }
 
 export function generateWebsiteSchema() {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.adjetmansneakers.com';
   const name = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
   return {
     '@context': 'https://schema.org',

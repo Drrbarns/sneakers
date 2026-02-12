@@ -4,7 +4,13 @@ import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+function normalizeAppUrl(raw: string | undefined): string {
+  const base = raw?.trim() || 'https://www.adjetmansneakers.com';
+  if (/^https?:\/\//i.test(base)) return base.replace(/\/+$/, '');
+  return `https://${base.replace(/\/+$/, '')}`;
+}
+
+const siteUrl = normalizeAppUrl(process.env.NEXT_PUBLIC_APP_URL);
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
 const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Adjetman Sneakers – your plug for authentic sneakers & streetwear in Ghana. Shop sneakers, Crocs, Birkenstock, bags & more. Free store pickup, fast delivery.';
 

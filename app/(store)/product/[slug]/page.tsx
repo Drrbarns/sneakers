@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import ProductDetailClient from './ProductDetailClient';
 import { generateMetadata as generateSEOMetadata } from '@/components/SEOHead';
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.adjetmansneakers.com';
 
 async function getProductBySlug(slug: string) {
   try {

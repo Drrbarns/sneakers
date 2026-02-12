@@ -251,7 +251,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
   const variantPrices = (product.variants || []).map((v: any) => v.price ?? product.price).filter((p: number) => typeof p === 'number');
   const minVariantPrice = hasVariants && variantPrices.length > 0 ? Math.min(...variantPrices) : product.price;
 
-  const baseUrlForSchema = typeof window !== 'undefined' ? `${window.location.origin}` : (process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app');
+  const baseUrlForSchema = typeof window !== 'undefined' ? `${window.location.origin}` : (process.env.NEXT_PUBLIC_APP_URL || 'https://www.adjetmansneakers.com');
   const productSchema = generateProductSchema({
     name: product.name || 'Product',
     description: product.description || product.name || '',

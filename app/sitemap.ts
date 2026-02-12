@@ -5,7 +5,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 function getBaseUrl(): string {
-  const url = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const url = process.env.NEXT_PUBLIC_APP_URL || 'https://www.adjetmansneakers.com';
   return url.replace(/\/$/, '');
 }
 
