@@ -6,20 +6,22 @@ import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
-const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Adjetman Sneakers – your plug for authentic sneakers & streetwear in Ghana.';
+const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Adjetman Sneakers – your plug for authentic sneakers & streetwear in Ghana. Shop sneakers, Crocs, Birkenstock, bags & more. Free store pickup, fast delivery.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: siteName,
-    template: `%s | ${siteName}`
+    default: `${siteName} – Authentic Sneakers & Streetwear`,
+    template: `%s | ${siteName}`,
   },
   description: siteDescription,
   keywords: [
-    "Online Store",
-    "eCommerce",
-    "Premium Products",
-    "Shop Online",
+    "sneakers Ghana",
+    "authentic sneakers",
+    "streetwear Ghana",
+    "Adjetman Sneakers",
+    "buy sneakers online",
+    "free delivery Accra",
   ],
   robots: {
     index: true,
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "en_GH",
     url: siteUrl,
     title: siteName,
     description: siteDescription,
@@ -87,7 +89,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-        {/* Structured Data - Organization (dynamically populated client-side or via env vars) */}
+        {/* Structured Data - Organization */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -97,10 +99,29 @@ export default function RootLayout({
               "name": siteName,
               "url": siteUrl,
               "description": siteDescription,
+              "logo": `${siteUrl}/black.png`,
               "contactPoint": {
                 "@type": "ContactPoint",
                 "contactType": "customer service",
+                "areaServed": "GH",
                 "availableLanguage": "English"
+              }
+            })
+          }}
+        />
+        {/* Structured Data - WebSite with Search */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": siteName,
+              "url": siteUrl,
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": { "@type": "EntryPoint", "urlTemplate": `${siteUrl.replace(/\/$/, '')}/shop?search={search_term_string}` },
+                "query-input": "required name=search_term_string"
               }
             })
           }}

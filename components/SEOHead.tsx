@@ -1,11 +1,15 @@
 import { Metadata } from 'next';
 
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
+
 interface SEOProps {
   title?: string;
   description?: string;
   keywords?: string[];
   ogImage?: string;
   ogType?: 'website' | 'product' | 'article';
+  canonicalPath?: string;
   price?: number;
   currency?: string;
   availability?: string;
@@ -17,10 +21,11 @@ interface SEOProps {
 
 export function generateMetadata({
   title = 'Adjetman Sneakers – Authentic Sneakers & Streetwear',
-  description = 'Shop Adjetman Sneakers for authentic sneakers, slides, Crocs, Birkenstock, bags, watches, belts, tops, jeans and socks with fast Ghana-wide delivery.',
+  description = 'Shop authentic sneakers, slides, Crocs, Birkenstock, bags, watches and streetwear in Ghana. Fast delivery, free store pickup, 30-day returns. Adjetman Sneakers – your plug for drip.',
   keywords = [],
-  ogImage = 'https://readdy.ai/api/search-image?query=modern%20premium%20ecommerce%20online%20shopping%20platform%20elegant%20design&width=1200&height=630&seq=ogimage&orientation=landscape',
+  ogImage,
   ogType = 'website',
+  canonicalPath = '',
   price,
   currency = 'GHS',
   availability,
@@ -29,39 +34,46 @@ export function generateMetadata({
   author,
   noindex = false
 }: SEOProps): Metadata {
-  const siteName = 'Adjetman Sneakers';
-  const siteUrl = 'https://adjetmansneakers.vercel.app';
-  const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+  const siteName = SITE_NAME;
+  const siteUrl = SITE_URL;
+  const fullTitle = title && (title.includes(siteName) || title.length > 50) ? title : title ? `${title} | ${siteName}` : siteName;
+  const defaultOgImage = `${siteUrl}/og-image.jpg`;
+  const imageUrl = ogImage?.startsWith('http') ? ogImage : ogImage ? `${siteUrl}${ogImage.startsWith('/') ? '' : '/'}${ogImage}` : defaultOgImage;
+  const canonical = canonicalPath ? `${siteUrl.replace(/\/$/, '')}${canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`}` : siteUrl;
 
   const defaultKeywords = [
-    'online shopping ghana',
-    'premium products ghana',
-    'buy online ghana',
-    'ecommerce ghana',
-    'fast delivery ghana',
-    'secure shopping'
+    'sneakers Ghana',
+    'authentic sneakers',
+    'buy sneakers online Ghana',
+    'streetwear Ghana',
+    'Adjetman Sneakers',
+    'free delivery Accra',
+    'store pickup Ghana',
+    'Crocs Ghana',
+    'Birkenstock Ghana'
   ];
 
   const allKeywords = [...new Set([...keywords, ...defaultKeywords])];
 
   const metadata: Metadata = {
     title: fullTitle,
-    description,
+    description: description.slice(0, 160),
     keywords: allKeywords.join(', '),
     authors: author ? [{ name: author }] : undefined,
     openGraph: {
       title: fullTitle,
-      description,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      description: description.slice(0, 160),
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: title || siteName }],
       type: ogType as any,
       siteName,
-      locale: 'en_GH'
+      locale: 'en_GH',
+      url: canonical
     },
     twitter: {
       card: 'summary_large_image',
       title: fullTitle,
-      description,
-      images: [ogImage]
+      description: description.slice(0, 160),
+      images: [imageUrl]
     },
     robots: noindex ? {
       index: false,
@@ -77,7 +89,7 @@ export function generateMetadata({
       }
     },
     alternates: {
-      canonical: siteUrl
+      canonical
     }
   };
 
@@ -89,50 +101,59 @@ export function generateMetadata({
     };
   }
 
+  if (ogType === 'product' && price !== undefined) {
+    (metadata.openGraph as any).type = 'product';
+    (metadata.openGraph as any).images = metadata.openGraph?.images;
+  }
+
   return metadata;
 }
+
+const SITE_URL_SCHEMA = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
 
 export function generateProductSchema(product: {
   name: string;
   description: string;
-  image: string;
+  image: string | string[];
   price: number;
   currency?: string;
-  sku: string;
+  sku?: string;
   rating?: number;
   reviewCount?: number;
   availability?: string;
   brand?: string;
   category?: string;
+  url?: string;
 }) {
+  const image = Array.isArray(product.image) ? product.image[0] : product.image;
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
+    '@type': 'Product' as const,
     name: product.name,
-    description: product.description,
-    image: product.image,
-    sku: product.sku,
+    description: (product.description || product.name).slice(0, 500),
+    image: image?.startsWith('http') ? image : image ? `${SITE_URL_SCHEMA}${image.startsWith('/') ? '' : '/'}${image}` : undefined,
+    sku: product.sku || undefined,
     brand: {
-      '@type': 'Brand',
+      '@type': 'Brand' as const,
       name: product.brand || 'Adjetman Sneakers'
     },
     offers: {
-      '@type': 'Offer',
+      '@type': 'Offer' as const,
       price: product.price,
       priceCurrency: product.currency || 'GHS',
-      availability: product.availability === 'in_stock'
+      availability: product.availability === 'in_stock' || product.availability === 'InStock'
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
-      url: typeof window !== 'undefined' ? window.location.href : '',
+      url: product.url || SITE_URL_SCHEMA,
       priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
     }
   };
 
-  if (product.rating && product.reviewCount) {
+  if (product.rating != null && (product.reviewCount ?? 0) > 0) {
     (schema as any).aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: product.rating,
-      reviewCount: product.reviewCount,
+      reviewCount: product.reviewCount ?? 0,
       bestRating: 5,
       worstRating: 1
     };
@@ -158,39 +179,39 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
   };
 }
 
-export function generateOrganizationSchema() {
+export function generateOrganizationSchema(logoUrl?: string) {
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+  const name = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
   return {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Adjetman Sneakers',
-    url: 'https://adjetmansneakers.vercel.app',
-    logo: 'https://readdy.ai/api/search-image?query=premium%20shop%20logo%20elegant%20modern&width=200&height=200&seq=logo&orientation=squarish',
+    '@type': 'Organization' as const,
+    name,
+    url: siteUrl,
+    logo: logoUrl?.startsWith('http') ? logoUrl : logoUrl ? `${siteUrl}${logoUrl.startsWith('/') ? '' : '/'}${logoUrl}` : `${siteUrl}/black.png`,
     contactPoint: {
-      '@type': 'ContactPoint',
+      '@type': 'ContactPoint' as const,
       telephone: '+233-53-471-2925',
-      contactType: 'Customer Service',
+      contactType: 'customer service',
       areaServed: 'GH',
-      availableLanguage: ['English']
+      availableLanguage: 'English'
     },
-    sameAs: [
-      'https://facebook.com/premiumshop',
-      'https://instagram.com/premiumshop',
-      'https://twitter.com/premiumshop'
-    ]
+    sameAs: [] as string[]
   };
 }
 
 export function generateWebsiteSchema() {
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+  const name = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
   return {
     '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'Adjetman Sneakers',
-    url: 'https://adjetmansneakers.vercel.app',
+    '@type': 'WebSite' as const,
+    name,
+    url: siteUrl,
     potentialAction: {
-      '@type': 'SearchAction',
+      '@type': 'SearchAction' as const,
       target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://adjetmansneakers.vercel.app/shop?search={search_term_string}'
+        '@type': 'EntryPoint' as const,
+        urlTemplate: `${siteUrl.replace(/\/$/, '')}/shop?search={search_term_string}`
       },
       'query-input': 'required name=search_term_string'
     }

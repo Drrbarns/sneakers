@@ -250,24 +250,26 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
   const discount = product.compare_at_price ? Math.round((1 - activePrice / product.compare_at_price) * 100) : 0;
   const minVariantPrice = hasVariants ? Math.min(...product.variants.map((v: any) => v.price || product.price)) : product.price;
 
+  const baseUrlForSchema = typeof window !== 'undefined' ? `${window.location.origin}` : (process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app');
   const productSchema = generateProductSchema({
     name: product.name,
     description: product.description,
-    image: product.images[0],
+    image: product.images,
     price: hasVariants ? minVariantPrice : product.price,
     currency: 'GHS',
     sku: product.sku,
     rating: product.rating,
     reviewCount: product.reviewCount,
     availability: product.quantity > 0 ? 'in_stock' : 'out_of_stock',
-    category: product.category
+    category: product.category,
+    url: `${baseUrlForSchema}/product/${slug}`
   });
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: 'https://standardecom.com' },
-    { name: 'Shop', url: 'https://standardecom.com/shop' },
-    { name: product.category, url: `https://standardecom.com/shop?category=${product.category.toLowerCase().replace(/\s+/g, '-')}` },
-    { name: product.name, url: `https://standardecom.com/product/${slug}` }
+    { name: 'Home', url: baseUrlForSchema },
+    { name: 'Shop', url: `${baseUrlForSchema}/shop` },
+    { name: product.category, url: `${baseUrlForSchema}/shop?category=${product.category?.toLowerCase().replace(/\s+/g, '-') || ''}` },
+    { name: product.name, url: `${baseUrlForSchema}/product/${slug}` }
   ]);
 
   return (
