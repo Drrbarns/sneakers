@@ -5,7 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import { useCMS } from '@/context/CMSContext';
-import ProductCard, { type ColorVariant, getColorHex } from '@/components/ProductCard';
+import ProductCard, {
+  type ColorVariant,
+  getColorHex,
+} from '@/components/ProductCard';
 import AnimatedSection, { AnimatedGrid } from '@/components/AnimatedSection';
 import { usePageTitle } from '@/hooks/usePageTitle';
 
@@ -13,7 +16,6 @@ export default function Home() {
   usePageTitle('');
   const { getSetting, getActiveBanners } = useCMS();
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,25 +25,11 @@ export default function Home() {
           .from('products')
           .select('*, product_variants(*), product_images(*)')
           .eq('status', 'active')
-          .eq('featured', true)
           .order('created_at', { ascending: false })
-          .limit(8);
+          .limit(9);
 
         if (productsError) throw productsError;
         setFeaturedProducts(productsData || []);
-
-        const { data: categoriesData, error: categoriesError } = await supabase
-          .from('categories')
-          .select('id, name, slug, image_url, metadata')
-          .eq('status', 'active')
-          .order('name');
-
-        if (categoriesError) throw categoriesError;
-
-        const featuredCategories = (categoriesData || []).filter(
-          (cat: any) => cat.metadata?.featured === true
-        );
-        setCategories(featuredCategories);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -52,32 +40,18 @@ export default function Home() {
     fetchData();
   }, []);
 
-  // ── CMS-driven config ────────────────────────────────────────────
-  const heroHeadline = getSetting('hero_headline');
-  const heroSubheadline = getSetting('hero_subheadline');
+  // ── CMS-driven config with sensible fallbacks ─────────────────────
+  const heroHeadline =
+    getSetting('hero_headline') || 'Walk with style, step with confidence';
+  const heroSubheadline =
+    getSetting('hero_subheadline') ||
+    'Discover the perfect blend of comfort, style and quality. Our exclusive collections are designed to elevate your look and support every step.';
   const heroImage = getSetting('hero_image') || '/hero.jpg';
-  const heroPrimaryText = getSetting('hero_primary_btn_text');
+  const heroPrimaryText = getSetting('hero_primary_btn_text') || 'Shop Now';
   const heroPrimaryLink = getSetting('hero_primary_btn_link') || '/shop';
-  const heroSecondaryText = getSetting('hero_secondary_btn_text');
-  const heroSecondaryLink = getSetting('hero_secondary_btn_link') || '/about';
-  const heroTagText = getSetting('hero_tag_text');
-  const heroBadgeLabel = getSetting('hero_badge_label');
-  const heroBadgeText = getSetting('hero_badge_text');
-  const heroBadgeSubtext = getSetting('hero_badge_subtext');
-
-  const features = [
-    { icon: getSetting('feature1_icon'), title: getSetting('feature1_title'), desc: getSetting('feature1_desc') },
-    { icon: getSetting('feature2_icon'), title: getSetting('feature2_title'), desc: getSetting('feature2_desc') },
-    { icon: getSetting('feature3_icon'), title: getSetting('feature3_title'), desc: getSetting('feature3_desc') },
-    { icon: getSetting('feature4_icon'), title: getSetting('feature4_title'), desc: getSetting('feature4_desc') },
-  ];
-
-  const stat1Title = getSetting('hero_stat1_title');
-  const stat1Desc = getSetting('hero_stat1_desc');
-  const stat2Title = getSetting('hero_stat2_title');
-  const stat2Desc = getSetting('hero_stat2_desc');
-  const stat3Title = getSetting('hero_stat3_title');
-  const stat3Desc = getSetting('hero_stat3_desc');
+  const heroSecondaryText =
+    getSetting('hero_secondary_btn_text') || 'Browse Shoes';
+  const heroSecondaryLink = getSetting('hero_secondary_btn_link') || '/shop';
 
   const activeBanners = getActiveBanners('top');
 
@@ -87,7 +61,10 @@ export default function Home() {
       <div className="bg-emerald-900 text-white py-2 overflow-hidden relative">
         <div className="flex animate-marquee whitespace-nowrap">
           {activeBanners.concat(activeBanners).map((banner, index) => (
-            <span key={index} className="mx-8 text-sm font-medium tracking-wide flex items-center">
+            <span
+              key={index}
+              className="mx-8 text-sm font-medium tracking-wide flex items-center"
+            >
               {banner.title}
             </span>
           ))}
@@ -96,189 +73,274 @@ export default function Home() {
     );
   };
 
+  const popularProducts = featuredProducts.slice(0, 3);
+  const latestProducts = featuredProducts;
+
   return (
-    <main className="flex-col items-center justify-between min-h-screen">
+    <main className="flex-col items-center justify-between min-h-screen bg-white">
       {renderBanners()}
 
-      {/* Hero Section */}
-      <section className="relative w-full overflow-hidden lg:bg-gradient-to-b lg:from-stone-50 lg:via-white lg:to-cream-50">
-
-        {/* Mobile: Full Background Image with Gradient Overlay */}
-        <div className="absolute inset-0 lg:hidden z-0">
-          <Image
-            src={heroImage}
-            fill
-            className="object-cover transition-opacity duration-1000"
-            alt="Hero Background"
-            priority
-            sizes="100vw"
-            quality={75}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10"></div>
-        </div>
-
-        {/* Desktop Blobs */}
-        <div className="hidden lg:block absolute inset-0 opacity-30 pointer-events-none">
-          <div className="absolute -top-20 -right-20 w-96 h-96 bg-emerald-100/50 rounded-full blur-3xl"></div>
-          <div className="absolute top-40 -left-20 w-72 h-72 bg-amber-50 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 h-[85vh] lg:h-auto lg:py-24 flex flex-col justify-end lg:block pb-16 lg:pb-0">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-
-            {/* Desktop: Image Layout (Hidden on Mobile) */}
-            <div className="hidden lg:block order-last relative">
-              <div className="relative aspect-[3/4] lg:aspect-auto lg:h-[650px] overflow-hidden rounded-[2rem] shadow-xl">
-                <Image
-                  src={heroImage}
-                  alt="Hero Image"
-                  fill
-                  className="object-cover object-top hover:scale-105 transition-transform duration-1000"
-                  priority
-                  sizes="50vw"
-                  quality={80}
-                />
-
-                {/* Floating Badge (Desktop Only) */}
-                {heroBadgeLabel && (
-                  <div className="absolute bottom-10 left-10 bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-2xl max-w-xs z-20 border border-white/50">
-                    <p className="font-serif text-emerald-800 text-lg italic mb-1">{heroBadgeLabel}</p>
-                    <p className="text-3xl font-bold text-gray-900 mb-1">{heroBadgeText}</p>
-                    <p className="text-sm text-gray-600 font-medium">{heroBadgeSubtext}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Content Column */}
-            <div className="relative z-10 text-center lg:text-left transition-colors duration-300">
-
-              {heroTagText && (
-                <div className="inline-flex items-center space-x-2 mb-4 lg:mb-6 justify-center lg:justify-start animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                  <span className="h-px w-8 bg-white/70 lg:bg-emerald-800"></span>
-                  <span className="text-white lg:text-emerald-800 text-sm font-semibold tracking-widest uppercase drop-shadow-sm lg:drop-shadow-none">
-                    {heroTagText}
-                  </span>
-                  <span className="h-px w-8 bg-white/70 lg:hidden"></span>
-                </div>
-              )}
-
-              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[3.2rem] xl:text-5xl text-white lg:text-gray-900 leading-[1.15] mb-4 lg:mb-6 drop-shadow-lg lg:drop-shadow-none animate-fade-in-up max-w-xl mx-auto lg:mx-0" style={{ animationDelay: '0.2s' }}>
-                {heroHeadline}
-              </h1>
-
-              <p className="text-lg text-white/90 lg:text-gray-600 leading-relaxed max-w-md mx-auto lg:mx-0 font-light mb-8 lg:mb-10 drop-shadow-md lg:drop-shadow-none animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                {heroSubheadline}
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start px-4 lg:px-0 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-                <Link href={heroPrimaryLink} className="inline-flex items-center justify-center bg-white lg:bg-gray-900 text-gray-900 lg:text-white hover:bg-emerald-50 lg:hover:bg-emerald-800 px-10 py-4 rounded-full font-medium transition-all text-lg shadow-xl hover:shadow-2xl hover:-translate-y-1 btn-animate">
-                  {heroPrimaryText}
-                </Link>
-                {heroSecondaryText && (
-                  <Link href={heroSecondaryLink} className="inline-flex items-center justify-center bg-white/20 backdrop-blur-md border border-white/50 lg:bg-white lg:border-gray-200 text-white lg:text-gray-900 hover:bg-white/30 lg:hover:text-emerald-800 lg:hover:border-emerald-800 px-10 py-4 rounded-full font-medium transition-colors text-lg btn-animate">
-                    {heroSecondaryText}
-                  </Link>
-                )}
-              </div>
-
-              {/* Stats - Desktop Only */}
-              <div className="mt-12 pt-8 border-t border-gray-200 hidden lg:grid grid-cols-3 gap-6">
-                <div className="flex flex-col items-start text-left">
-                  <p className="font-serif font-bold text-gray-900 text-lg">{stat1Title}</p>
-                  <p className="text-sm text-gray-500">{stat1Desc}</p>
-                </div>
-                <div className="flex flex-col items-start text-left">
-                  <p className="font-serif font-bold text-gray-900 text-lg">{stat2Title}</p>
-                  <p className="text-sm text-gray-500">{stat2Desc}</p>
-                </div>
-                <div className="flex flex-col items-start text-left">
-                  <p className="font-serif font-bold text-gray-900 text-lg">{stat3Title}</p>
-                  <p className="text-sm text-gray-500">{stat3Desc}</p>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <AnimatedSection className="flex items-end justify-between mb-12">
-            <div>
-              <h2 className="font-serif text-4xl md:text-5xl text-gray-900 mb-4">Shop by Category</h2>
-              <p className="text-gray-600 text-lg max-w-md">Explore our carefully curated collections</p>
-            </div>
-            <Link href="/categories" className="hidden md:flex items-center text-emerald-800 font-medium hover:text-emerald-900 transition-colors">
-              View All <i className="ri-arrow-right-line ml-2"></i>
-            </Link>
-          </AnimatedSection>
-
-          <AnimatedGrid className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-            {categories.map((category) => (
-              <Link href={`/shop?category=${category.slug}`} key={category.id} className="group cursor-pointer block">
-                <div className="aspect-[3/4] rounded-2xl overflow-hidden mb-4 relative shadow-md">
-                  <Image
-                    src={category.image || category.image_url || 'https://via.placeholder.com/600x800?text=' + encodeURIComponent(category.name)}
-                    alt={category.name}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    quality={75}
-                  />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                  <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-4 rounded-xl text-center transform translate-y-2 opacity-90 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <h3 className="font-serif font-bold text-gray-900 text-lg">{category.name}</h3>
-                    <span className="text-xs text-emerald-800 font-medium uppercase tracking-wider mt-1 block">View Collection</span>
-                  </div>
-                </div>
+      {/* Hero Section – matches KicksPlug hero */}
+      <section className="relative w-full bg-hero-grid text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 flex flex-col lg:flex-row items-center gap-10">
+          {/* Left: Text */}
+          <div className="w-full lg:w-1/2 space-y-6">
+            <span className="inline-flex items-center rounded-full bg-white/10 border border-white/30 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em]">
+              KicksPlug
+            </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.2rem] font-extrabold leading-tight">
+              {heroHeadline}
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-xl">
+              {heroSubheadline}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Link
+                href={heroPrimaryLink}
+                className="btn-animate inline-flex items-center justify-center rounded-full bg-[#FFC727] px-10 py-4 text-sm sm:text-base font-semibold text-gray-900 shadow-lg hover:bg-[#ffb800]"
+              >
+                {heroPrimaryText}
               </Link>
-            ))}
-          </AnimatedGrid>
+              <Link
+                href={heroSecondaryLink}
+                className="btn-animate inline-flex items-center justify-center rounded-full border border-white px-10 py-4 text-sm sm:text-base font-semibold text-white hover:bg-white hover:text-gray-900"
+              >
+                {heroSecondaryText}
+              </Link>
+            </div>
+          </div>
 
-          <div className="mt-8 text-center md:hidden">
-            <Link href="/categories" className="inline-flex items-center text-emerald-800 font-medium hover:text-emerald-900 transition-colors">
-              View All <i className="ri-arrow-right-line ml-2"></i>
-            </Link>
+          {/* Right: Sneaker image */}
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+            <div className="relative max-w-lg w-full">
+              <div className="absolute inset-0 rounded-[2.5rem] bg-black/10 blur-3xl" />
+              <div className="relative rounded-[2.5rem] bg-[#064E3B] px-6 py-6 shadow-2xl overflow-hidden">
+                <div className="relative aspect-[16/9]">
+                  <Image
+                    src={heroImage}
+                    alt="Featured sneaker"
+                    fill
+                    className="object-contain object-center drop-shadow-2xl"
+                    sizes="(min-width: 1024px) 480px, 100vw"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="py-24 bg-stone-50">
+      {/* Our Popular Products */}
+      <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection className="text-center mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl text-gray-900 mb-4">Featured Products</h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">Handpicked for you</p>
-          </AnimatedSection>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900">
+                Our Popular Products
+              </h2>
+            </div>
+            <Link
+              href="/shop"
+              className="hidden md:inline-flex items-center text-sm font-medium text-gray-900 hover:text-emerald-700"
+            >
+              Explore More
+              <i className="ri-arrow-right-line ml-1" />
+            </Link>
+          </div>
 
           {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[...Array(4)].map((_, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(3)].map((_, i) => (
                 <div key={i} className="animate-pulse">
-                  <div className="bg-gray-200 aspect-[3/4] rounded-xl mb-4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  <div className="bg-gray-200 aspect-[4/5] rounded-2xl mb-4" />
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+                  <div className="h-4 bg-gray-200 rounded w-1/2" />
                 </div>
               ))}
             </div>
           ) : (
-            <AnimatedGrid className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-              {featuredProducts.map((product) => {
+            <AnimatedGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {popularProducts.map((product) => {
                 const variants = product.product_variants || [];
                 const hasVariants = variants.length > 0;
-                const minVariantPrice = hasVariants ? Math.min(...variants.map((v: any) => v.price || product.price)) : undefined;
-                const totalVariantStock = hasVariants ? variants.reduce((sum: number, v: any) => sum + (v.quantity || 0), 0) : 0;
-                const effectiveStock = hasVariants ? totalVariantStock : product.quantity;
+                const minVariantPrice = hasVariants
+                  ? Math.min(
+                      ...variants.map((v: any) => v.price || product.price)
+                    )
+                  : undefined;
+                const totalVariantStock = hasVariants
+                  ? variants.reduce(
+                      (sum: number, v: any) => sum + (v.quantity || 0),
+                      0
+                    )
+                  : 0;
+                const effectiveStock = hasVariants
+                  ? totalVariantStock
+                  : product.quantity;
 
                 const colorVariants: ColorVariant[] = [];
                 const seenColors = new Set<string>();
                 for (const v of variants) {
                   const colorName = (v as any).option2;
-                  if (colorName && !seenColors.has(colorName.toLowerCase().trim())) {
+                  if (
+                    colorName &&
+                    !seenColors.has(colorName.toLowerCase().trim())
+                  ) {
+                    const hex = getColorHex(colorName);
+                    if (hex) {
+                      seenColors.add(colorName.toLowerCase().trim());
+                      colorVariants.push({ name: colorName.trim(), hex });
+                    }
+                  }
+                }
+
+                return (
+                  <div
+                    key={product.id}
+                    className="rounded-3xl bg-white shadow-sm hover-lift p-4 flex flex-col"
+                  >
+                    <div className="relative mb-4 rounded-3xl bg-gray-100 overflow-hidden aspect-[4/5]">
+                      <Image
+                        src={
+                          product.product_images?.[0]?.url ||
+                          'https://via.placeholder.com/400x500'
+                        }
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 1024px) 320px, 50vw"
+                      />
+                    </div>
+                    <div className="flex-1 flex flex-col">
+                      <span className="text-xs text-gray-400 mb-1">
+                        01 COLOR
+                      </span>
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="font-bold text-gray-900">
+                          GH₵{(minVariantPrice ?? product.price).toFixed(2)}
+                        </span>
+                        <span className="flex items-center text-xs text-gray-500">
+                          <span className="text-yellow-400 mr-1">
+                            <i className="ri-star-fill" />
+                          </span>
+                          4.5
+                          <span className="ml-1">(125)</span>
+                        </span>
+                      </div>
+                      <div className="mt-4">
+                        <Link
+                          href={`/product/${product.slug}`}
+                          className="inline-flex items-center justify-center rounded-full border border-gray-200 px-4 py-2 text-xs font-medium text-gray-900 hover:bg-gray-900 hover:text-white"
+                        >
+                          Add to Cart
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </AnimatedGrid>
+          )}
+        </div>
+      </section>
+
+      {/* Best Shoes Collection */}
+      <section className="bg-white pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900">
+              Best Shoes Collection
+            </h2>
+            <Link
+              href="/shop"
+              className="hidden md:inline-flex items-center text-sm font-medium text-gray-900 hover:text-emerald-700"
+            >
+              Explore More
+              <i className="ri-arrow-right-line ml-1" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-6">
+            <div className="rounded-3xl overflow-hidden relative bg-gray-900">
+              <Image
+                src={heroImage}
+                alt="Basketball collection"
+                fill
+                className="object-cover object-center"
+              />
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {latestProducts.slice(0, 3).map((product) => (
+                <div
+                  key={product.id}
+                  className="rounded-3xl overflow-hidden bg-gray-100 relative aspect-[4/3]"
+                >
+                  <Image
+                    src={
+                      product.product_images?.[0]?.url ||
+                      'https://via.placeholder.com/400x500'
+                    }
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Latest Products */}
+      <section className="bg-white pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900">
+              Our Latest Products
+            </h2>
+          </div>
+
+          {loading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-gray-200 aspect-[3/4] rounded-2xl mb-4" />
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+                  <div className="h-4 bg-gray-200 rounded w-1/2" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <AnimatedGrid className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {latestProducts.map((product) => {
+                const variants = product.product_variants || [];
+                const hasVariants = variants.length > 0;
+                const minVariantPrice = hasVariants
+                  ? Math.min(
+                      ...variants.map((v: any) => v.price || product.price)
+                    )
+                  : undefined;
+                const totalVariantStock = hasVariants
+                  ? variants.reduce(
+                      (sum: number, v: any) => sum + (v.quantity || 0),
+                      0
+                    )
+                  : 0;
+                const effectiveStock = hasVariants
+                  ? totalVariantStock
+                  : product.quantity;
+
+                const colorVariants: ColorVariant[] = [];
+                const seenColors = new Set<string>();
+                for (const v of variants) {
+                  const colorName = (v as any).option2;
+                  if (
+                    colorName &&
+                    !seenColors.has(colorName.toLowerCase().trim())
+                  ) {
                     const hex = getColorHex(colorName);
                     if (hex) {
                       seenColors.add(colorName.toLowerCase().trim());
@@ -295,7 +357,10 @@ export default function Home() {
                     name={product.name}
                     price={product.price}
                     originalPrice={product.compare_at_price}
-                    image={product.product_images?.[0]?.url || 'https://via.placeholder.com/400x500'}
+                    image={
+                      product.product_images?.[0]?.url ||
+                      'https://via.placeholder.com/400x500'
+                    }
                     rating={product.rating_avg || 5}
                     reviewCount={product.review_count || 0}
                     badge={product.featured ? 'Featured' : undefined}
@@ -310,31 +375,44 @@ export default function Home() {
               })}
             </AnimatedGrid>
           )}
-
-          <div className="text-center mt-16">
-            <Link
-              href="/shop"
-              className="inline-flex items-center justify-center bg-gray-900 text-white px-10 py-4 rounded-full font-medium hover:bg-emerald-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 btn-animate"
-            >
-              View All Products
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Trust Features */}
-      <section className="py-16 bg-white border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {features.map((feature, i) => (
-              <AnimatedSection key={i} delay={i * 100} className="flex flex-col items-center text-center p-4">
-                <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mb-4 text-emerald-700">
-                  <i className={`${feature.icon} text-3xl`}></i>
-                </div>
-                <h3 className="font-bold text-gray-900 mb-1">{feature.title}</h3>
-                <p className="text-gray-500 text-sm">{feature.desc}</p>
-              </AnimatedSection>
-            ))}
+      {/* Promo Banner – Elegance craft Ascent Shoes */}
+      <section className="pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-3xl bg-hero-grid text-white flex flex-col md:flex-row items-center md:items-stretch">
+            <div className="w-full md:w-2/3 px-8 py-10 flex flex-col justify-center space-y-3">
+              <span className="text-sm uppercase tracking-[0.25em] text-white/80">
+                New Arrival
+              </span>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold">
+                Elegance craft Ascent Shoes
+              </h3>
+              <p className="text-sm sm:text-base text-white/90 max-w-md">
+                Experience unmatched comfort and performance with our latest
+                running silhouette.
+              </p>
+              <Link
+                href="/shop"
+                className="mt-4 inline-flex w-max items-center rounded-full bg-[#FF7A1A] px-8 py-3 text-sm font-semibold text-white shadow-lg hover:bg-[#ff6a00]"
+              >
+                Explore More
+              </Link>
+            </div>
+            <div className="w-full md:w-1/3 relative py-6 pr-6">
+              <div className="relative h-40 sm:h-48 md:h-full">
+                <Image
+                  src={heroImage}
+                  alt="Ascent Shoes"
+                  fill
+                  className="object-contain object-center drop-shadow-2xl"
+                />
+              </div>
+              <div className="absolute top-6 right-6 rounded-full bg-white text-gray-900 px-4 py-2 text-sm font-semibold shadow-lg">
+                GH₵99.99
+              </div>
+            </div>
           </div>
         </div>
       </section>
