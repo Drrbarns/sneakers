@@ -129,8 +129,8 @@ export function generateProductSchema(product: {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product' as const,
-    name: product.name,
-    description: (product.description || product.name).slice(0, 500),
+    name: product.name || 'Product',
+    description: (product.description || product.name || '').slice(0, 500),
     image: image?.startsWith('http') ? image : image ? `${SITE_URL_SCHEMA}${image.startsWith('/') ? '' : '/'}${image}` : undefined,
     sku: product.sku || undefined,
     brand: {

@@ -247,20 +247,21 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
     );
   }
 
-  const discount = product.compare_at_price ? Math.round((1 - activePrice / product.compare_at_price) * 100) : 0;
-  const minVariantPrice = hasVariants ? Math.min(...product.variants.map((v: any) => v.price || product.price)) : product.price;
+  const discount = product.compare_at_price && activePrice ? Math.round((1 - activePrice / product.compare_at_price) * 100) : 0;
+  const variantPrices = (product.variants || []).map((v: any) => v.price ?? product.price).filter((p: number) => typeof p === 'number');
+  const minVariantPrice = hasVariants && variantPrices.length > 0 ? Math.min(...variantPrices) : product.price;
 
   const baseUrlForSchema = typeof window !== 'undefined' ? `${window.location.origin}` : (process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app');
   const productSchema = generateProductSchema({
-    name: product.name,
-    description: product.description,
-    image: product.images,
+    name: product.name || 'Product',
+    description: product.description || product.name || '',
+    image: product.images?.length ? product.images : (product.images?.[0] ? [product.images[0]] : []),
     price: hasVariants ? minVariantPrice : product.price,
     currency: 'GHS',
     sku: product.sku,
     rating: product.rating,
-    reviewCount: product.reviewCount,
-    availability: product.quantity > 0 ? 'in_stock' : 'out_of_stock',
+    reviewCount: product.reviewCount ?? 0,
+    availability: (product.stockCount ?? product.quantity ?? 0) > 0 ? 'in_stock' : 'out_of_stock',
     category: product.category,
     url: `${baseUrlForSchema}/product/${slug}`
   });
@@ -298,8 +299,8 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
               <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-200/80">
                 <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 ring-2 ring-gray-100 mb-4">
                   <Image
-                    src={product.images[selectedImage]}
-                    alt={product.name}
+                    src={(product.images?.[selectedImage] ?? product.images?.[0]) || 'https://via.placeholder.com/800x800?text=No+Image'}
+                    alt={product.name || 'Product'}
                     fill
                     className="object-cover object-center"
                     sizes="(max-width: 1024px) 100vw, 50vw"
