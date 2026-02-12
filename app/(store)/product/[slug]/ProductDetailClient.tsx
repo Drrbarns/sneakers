@@ -47,7 +47,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
       try {
         setLoading(true);
         // Fetch main product (cached for 2 minutes)
-        const { data: productData, error } = await cachedQuery<{ data: any; error: any }>(
+        const result = await cachedQuery<{ data: any; error: any }>(
           `product:${slug}`,
           async () => {
             let query = supabase
@@ -72,8 +72,10 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           2 * 60 * 1000 // 2 minutes
         );
 
-        if (error || !productData) {
-          console.error('Error fetching product:', error);
+        const productData = result && typeof result === 'object' && 'data' in result ? result.data : null;
+        const error = result && typeof result === 'object' && 'error' in result ? result.error : null;
+
+        if (error || !productData || typeof productData !== 'object') {
           setLoading(false);
           return;
         }
@@ -96,10 +98,11 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           }
         });
 
-        const sortedImages = (productData.product_images || [])
+        const rawImages = Array.isArray(productData.product_images) ? productData.product_images : [];
+        const sortedImages = rawImages
           .slice()
           .sort((a: any, b: any) => (Number(a?.position) ?? 0) - (Number(b?.position) ?? 0))
-          .map((img: any) => img?.url)
+          .map((img: any) => (typeof img === 'string' ? img : img?.url))
           .filter((url: any): url is string => typeof url === 'string' && url.length > 0);
         const transformedProduct = {
           ...productData,
@@ -252,31 +255,37 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
   const minVariantPrice = hasVariants && variantPrices.length > 0 ? Math.min(...variantPrices) : product.price;
 
   const baseUrlForSchema = typeof window !== 'undefined' ? `${window.location.origin}` : (process.env.NEXT_PUBLIC_APP_URL || 'https://www.adjetmansneakers.com');
-  const productSchema = generateProductSchema({
-    name: product.name || 'Product',
-    description: product.description || product.name || '',
-    image: product.images?.length ? product.images : (product.images?.[0] ? [product.images[0]] : []),
-    price: hasVariants ? minVariantPrice : product.price,
-    currency: 'GHS',
-    sku: product.sku,
-    rating: product.rating,
-    reviewCount: product.reviewCount ?? 0,
-    availability: (product.stockCount ?? product.quantity ?? 0) > 0 ? 'in_stock' : 'out_of_stock',
-    category: product.category,
-    url: `${baseUrlForSchema}/product/${slug}`
-  });
-
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: baseUrlForSchema },
-    { name: 'Shop', url: `${baseUrlForSchema}/shop` },
-    { name: product.category, url: `${baseUrlForSchema}/shop?category=${product.category?.toLowerCase().replace(/\s+/g, '-') || ''}` },
-    { name: product.name, url: `${baseUrlForSchema}/product/${slug}` }
-  ]);
+  let productSchema: object | null = null;
+  let breadcrumbSchema: object | null = null;
+  try {
+    productSchema = generateProductSchema({
+      name: product.name || 'Product',
+      description: product.description || product.name || '',
+      image: Array.isArray(product.images) && product.images.length > 0 ? product.images : [],
+      price: hasVariants ? minVariantPrice : (Number(product.price) || 0),
+      currency: 'GHS',
+      sku: product.sku,
+      rating: product.rating,
+      reviewCount: product.reviewCount ?? 0,
+      availability: (product.stockCount ?? product.quantity ?? 0) > 0 ? 'in_stock' : 'out_of_stock',
+      category: product.category,
+      url: `${baseUrlForSchema}/product/${slug}`
+    });
+    breadcrumbSchema = generateBreadcrumbSchema([
+      { name: 'Home', url: baseUrlForSchema },
+      { name: 'Shop', url: `${baseUrlForSchema}/shop` },
+      { name: product.category || 'Shop', url: `${baseUrlForSchema}/shop?category=${String(product.category || '').toLowerCase().replace(/\s+/g, '-')}` },
+      { name: product.name || 'Product', url: `${baseUrlForSchema}/product/${slug}` }
+    ]);
+  } catch (_) {
+    productSchema = null;
+    breadcrumbSchema = null;
+  }
 
   return (
     <>
-      <StructuredData data={productSchema} />
-      <StructuredData data={breadcrumbSchema} />
+      {productSchema && <StructuredData data={productSchema} />}
+      {breadcrumbSchema && <StructuredData data={breadcrumbSchema} />}
 
       <main className="min-h-screen bg-gray-100">
         <section className="py-4 sm:py-5 bg-white border-b border-gray-200">
@@ -306,6 +315,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
                     quality={80}
+                    unoptimized
                   />
                   {discount > 0 && (
                     <span className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-red-500 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full">
@@ -330,6 +340,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                           className="object-cover object-center"
                           sizes="(max-width: 1024px) 25vw, 12vw"
                           quality={60}
+                          unoptimized
                         />
                       </button>
                     ))}

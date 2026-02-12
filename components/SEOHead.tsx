@@ -125,13 +125,16 @@ export function generateProductSchema(product: {
   category?: string;
   url?: string;
 }) {
-  const image = Array.isArray(product.image) ? product.image[0] : product.image;
+  const rawImage = Array.isArray(product.image) ? product.image[0] : product.image;
+  const imageUrl = typeof rawImage === 'string' && rawImage
+    ? (rawImage.startsWith('http') ? rawImage : `${SITE_URL_SCHEMA}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`)
+    : undefined;
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product' as const,
     name: product.name || 'Product',
     description: (product.description || product.name || '').slice(0, 500),
-    image: image?.startsWith('http') ? image : image ? `${SITE_URL_SCHEMA}${image.startsWith('/') ? '' : '/'}${image}` : undefined,
+    image: imageUrl,
     sku: product.sku || undefined,
     brand: {
       '@type': 'Brand' as const,
