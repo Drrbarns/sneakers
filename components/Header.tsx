@@ -246,7 +246,11 @@ export default function Header() {
           <div className="absolute top-0 left-0 bottom-0 w-4/5 max-w-xs bg-white shadow-xl flex flex-col animate-in slide-in-from-left duration-300">
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                <img src={siteLogo} alt={siteName} className="h-8 w-auto object-contain" />
+                {siteLogoUrl ? (
+                  <img src={siteLogoUrl} alt={siteName} className="h-8 w-auto object-contain" />
+                ) : (
+                  <Image src={headerLogoImg} alt={siteName} className="h-8 w-auto object-contain" height={32} width={160} />
+                )}
               </Link>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
