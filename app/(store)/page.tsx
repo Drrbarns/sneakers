@@ -11,7 +11,6 @@ import ProductCard, {
 } from '@/components/ProductCard';
 import AnimatedSection, { AnimatedGrid } from '@/components/AnimatedSection';
 import { usePageTitle } from '@/hooks/usePageTitle';
-import heroSneakerImg from '../../cc865524879023ad80ead9ec87c8e0eec2b66dc8.png';
 import bannerSneakerImg from '../../ad9048e4060aae008ec4a17cfe2d9bdb52f58f97.png';
 
 export default function Home() {
@@ -48,7 +47,6 @@ export default function Home() {
   const heroSubheadline =
     getSetting('hero_subheadline') ||
     'Discover the perfect blend of comfort, style and quality. Our exclusive collections are designed to elevate your look and support every step.';
-  const heroImage = heroSneakerImg;
   const heroPrimaryText = getSetting('hero_primary_btn_text') || 'Shop Now';
   const heroPrimaryLink = getSetting('hero_primary_btn_link') || '/shop';
   const heroSecondaryText =
@@ -82,104 +80,57 @@ export default function Home() {
     <main className="flex-col items-center justify-between min-h-screen bg-white">
       {renderBanners()}
 
-      {/* Hero – Adjetman Sneakers */}
-      <section className="relative w-full bg-hero-grid text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid gap-10 lg:grid-cols-2 items-center">
-          {/* Left: copy */}
-          <div className="space-y-6 max-w-xl">
-            <span className="inline-flex items-center rounded-full bg-white/10 border border-white/20 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.25em]">
-              Adjetman Sneakers · New drops in
-            </span>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.1rem] font-extrabold leading-tight">
-              {heroHeadline}
-            </h1>
-            <p className="text-sm sm:text-base md:text-lg text-white/85">
-              {heroSubheadline}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <Link
-                href={heroPrimaryLink}
-                className="btn-animate inline-flex items-center justify-center rounded-full bg-[#FBBF24] px-9 py-3 text-sm sm:text-base font-semibold text-gray-900 shadow-[0_14px_30px_rgba(0,0,0,0.35)] hover:bg-[#f59e0b] transition-colors"
-              >
-                {heroPrimaryText}
-                <i className="ri-arrow-right-up-line ml-2 text-base" />
-              </Link>
-              <Link
-                href={heroSecondaryLink}
-                className="btn-animate inline-flex items-center justify-center rounded-full border border-white/40 px-9 py-3 text-sm sm:text-base font-semibold text-white/95 hover:bg-white hover:text-gray-900 transition-colors"
-              >
-                {heroSecondaryText}
-              </Link>
-            </div>
-            <div className="flex flex-wrap gap-4 pt-4 text-xs sm:text-sm text-white/80">
-              <div className="inline-flex items-center gap-2">
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/10">
-                  <i className="ri-shield-check-line text-emerald-200" />
-                </span>
-                <span className="font-medium">100% authentic sneakers only</span>
-              </div>
-              <div className="inline-flex items-center gap-2">
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/10">
-                  <i className="ri-truck-line text-emerald-200" />
-                </span>
-                <span className="font-medium">Same‑day delivery in Accra</span>
-              </div>
-            </div>
+      {/* Hero – full-bleed image background + dark overlay + text */}
+      <section className="relative w-full min-h-[70vmin] sm:min-h-[75vmin] md:min-h-[85vmin] flex items-center justify-center overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/hero-sneakers-bg.png)' }}
+        />
+        <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 text-center">
+          <span className="inline-flex items-center rounded-full bg-white/15 border border-white/25 px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em] text-white/95 mb-4 sm:mb-5">
+            Adjetman Sneakers · New drops in
+          </span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem] font-extrabold leading-tight text-white drop-shadow-sm max-w-3xl mx-auto">
+            {heroHeadline}
+          </h1>
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-white/90 max-w-xl mx-auto px-2 sm:px-0">
+            {heroSubheadline}
+          </p>
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <Link
+              href={heroPrimaryLink}
+              className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-amber-400 px-6 py-2.5 sm:px-9 sm:py-3 text-sm sm:text-base font-semibold text-gray-900 shadow-lg hover:bg-amber-300 transition-colors"
+            >
+              {heroPrimaryText}
+              <i className="ri-arrow-right-up-line ml-2 text-base" />
+            </Link>
+            <Link
+              href={heroSecondaryLink}
+              className="w-full sm:w-auto inline-flex items-center justify-center rounded-full border-2 border-white/50 px-6 py-2.5 sm:px-9 sm:py-3 text-sm sm:text-base font-semibold text-white hover:bg-white hover:text-gray-900 transition-colors"
+            >
+              {heroSecondaryText}
+            </Link>
           </div>
-
-          {/* Right: hero shoe card */}
-          <div className="relative w-full max-w-xl mx-auto">
-            <div className="absolute -inset-8 bg-gradient-to-br from-emerald-300/20 via-emerald-500/10 to-transparent blur-3xl pointer-events-none" />
-            <div className="relative rounded-[32px] bg-[#064E3B] p-5 sm:p-7 shadow-2xl overflow-hidden">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.25em] text-emerald-200/80">
-                    Featured drop
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-white/90">
-                    Everyday comfort · Street approved
-                  </p>
-                </div>
-                <span className="rounded-full bg-white/10 border border-white/20 px-3 py-1 text-xs font-medium">
-                  From GH₵{(popularProducts[0]?.price ?? 249).toFixed(0)}
-                </span>
-              </div>
-
-              <div className="relative aspect-[4/3] rounded-3xl bg-emerald-900/40 overflow-hidden">
-                <Image
-                  src={
-                    popularProducts[0]?.product_images?.[0]?.url ?? heroImage
-                  }
-                  alt={popularProducts[0]?.name || 'Hero sneaker'}
-                  fill
-                  className="object-contain object-center drop-shadow-[0_30px_60px_rgba(0,0,0,0.9)]"
-                  sizes="(min-width: 1024px) 420px, 90vw"
-                />
-              </div>
-
-              <div className="mt-4 flex items-center justify-between text-sm text-white/90">
-                <div>
-                  <p className="font-semibold">
-                    {popularProducts[0]?.name || 'Signature daily beater'}
-                  </p>
-                  <p className="text-xs text-emerald-200/80">
-                    Lightweight · Cushioned · Street ready
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs text-emerald-200/80">From</p>
-                  <p className="text-lg font-bold">
-                    GH₵{(popularProducts[0]?.price ?? 249).toFixed(0)}
-                  </p>
-                </div>
-              </div>
+          <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-white/85">
+            <div className="inline-flex items-center gap-2">
+              <span className="inline-flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-white/15">
+                <i className="ri-shield-check-line text-emerald-200 text-sm sm:text-base" />
+              </span>
+              <span className="font-medium">100% authentic</span>
+            </div>
+            <div className="inline-flex items-center gap-2">
+              <span className="inline-flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-white/15">
+                <i className="ri-truck-line text-emerald-200 text-sm sm:text-base" />
+              </span>
+              <span className="font-medium">Same‑day delivery in Accra</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Quick category shortcuts */}
-      <AnimatedSection className="bg-white py-10 border-b border-emerald-50">
+      <AnimatedSection className="bg-white py-8 sm:py-10 border-b border-emerald-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
             <div>
@@ -258,7 +209,7 @@ export default function Home() {
       </AnimatedSection>
 
       {/* Trending sneakers grid */}
-      <AnimatedSection className="bg-white py-14">
+      <AnimatedSection className="bg-white py-10 sm:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
             <div>
@@ -289,7 +240,7 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <AnimatedGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatedGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {popularProducts.map((product) => {
                 const variants = product.product_variants || [];
                 const hasVariants = variants.length > 0;
@@ -354,7 +305,7 @@ export default function Home() {
       </AnimatedSection>
 
       {/* New drops carousel */}
-      <AnimatedSection className="bg-emerald-50/60 py-14">
+      <AnimatedSection className="bg-emerald-50/60 py-10 sm:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
             <div>
@@ -377,9 +328,9 @@ export default function Home() {
                 (product, index) => (
                   <div
                     key={`${product.id}-${index}`}
-                    className="min-w-[220px] max-w-[260px] w-[var(--card-width)] flex-shrink-0 rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow"
+                    className="min-w-[180px] sm:min-w-[220px] max-w-[260px] w-[var(--card-width)] flex-shrink-0 rounded-xl sm:rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-emerald-900/5">
+                    <div className="relative aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden bg-emerald-900/5">
                       <Image
                         src={
                           product.product_images?.[0]?.url ||
@@ -418,9 +369,9 @@ export default function Home() {
       </AnimatedSection>
 
       {/* Why shop with Adjetman Sneakers */}
-      <AnimatedSection className="bg-white py-14">
+      <AnimatedSection className="bg-white py-10 sm:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
             <p className="text-xs font-semibold tracking-[0.25em] text-emerald-600 uppercase">
               Why customers stay with us
             </p>
@@ -434,7 +385,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3">
             {[
               {
                 icon: 'ri-vip-crown-line',
@@ -475,22 +426,22 @@ export default function Home() {
       </AnimatedSection>
 
       {/* Big CTA banner */}
-      <section className="pb-20">
+      <section className="pb-12 sm:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl bg-emerald-950 text-white flex flex-col md:flex-row items-center md:items-stretch">
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-emerald-950 text-white flex flex-col md:flex-row items-center md:items-stretch">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(52,211,153,0.25),_transparent_55%),radial-gradient(circle_at_bottom_right,_rgba(16,185,129,0.4),_transparent_55%)] opacity-80" />
-            <div className="relative w-full md:w-3/5 px-8 py-10 flex flex-col justify-center space-y-3">
+            <div className="relative w-full md:w-3/5 px-5 sm:px-8 py-8 sm:py-10 flex flex-col justify-center space-y-3 text-center md:text-left">
               <span className="inline-flex items-center text-xs font-semibold tracking-[0.25em] uppercase text-emerald-200">
                 Join the Adjetman squad
               </span>
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold">
+              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold">
                 Lock in your next rotation before it sells out.
               </h3>
-              <p className="text-sm sm:text-base text-emerald-100 max-w-md">
+              <p className="text-sm sm:text-base text-emerald-100 max-w-md mx-auto md:mx-0">
                 Save your sizes, build wishlists and get early access to limited
                 pairs, secret restocks and exclusive offers.
               </p>
-              <div className="pt-2 flex flex-wrap gap-3">
+              <div className="pt-2 flex flex-wrap gap-3 justify-center md:justify-start">
                 <Link
                   href="/shop"
                   className="inline-flex items-center rounded-full bg-white text-emerald-900 px-8 py-3 text-sm font-semibold shadow-lg hover:bg-emerald-100"
@@ -506,8 +457,8 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <div className="relative w-full md:w-2/5 py-6 pr-4 pl-4 md:pl-0">
-              <div className="relative h-52 sm:h-64 md:h-full">
+            <div className="relative w-full md:w-2/5 py-4 sm:py-6 pr-4 pl-4 md:pl-0 flex justify-center">
+              <div className="relative h-40 sm:h-52 md:h-64 lg:h-full min-h-[12rem] w-full max-w-sm md:max-w-none">
                 <Image
                   src={bannerSneakerImg}
                   alt="Sneaker line-up"
