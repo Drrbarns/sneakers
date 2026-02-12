@@ -16,12 +16,14 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [wishlistCount, setWishlistCount] = useState(0);
   const [user, setUser] = useState<any>(null);
+  const [cmsLogoFailed, setCmsLogoFailed] = useState(false);
 
   const { cartCount, isCartOpen, setIsCartOpen } = useCart();
   const { getSetting, getSettingJSON } = useCMS();
 
   const siteName = getSetting('site_name') || 'Adjetman Sneakers';
   const siteLogoUrl = getSetting('site_logo');
+  const useCmsLogo = Boolean(siteLogoUrl && (siteLogoUrl.startsWith('http://') || siteLogoUrl.startsWith('https://')) && !cmsLogoFailed);
   const showSearch = getSetting('header_show_search') !== 'false';
   const showWishlist = getSetting('header_show_wishlist') !== 'false';
   const showCart = getSetting('header_show_cart') !== 'false';
@@ -32,6 +34,10 @@ export default function Header() {
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' }
   ]);
+
+  useEffect(() => {
+    setCmsLogoFailed(false);
+  }, [siteLogoUrl]);
 
   useEffect(() => {
     // Wishlist logic
@@ -89,8 +95,13 @@ export default function Header() {
                   className="flex items-center"
                   aria-label="Go to homepage"
                 >
-                  {siteLogoUrl ? (
-                    <img src={siteLogoUrl} alt={siteName} className="h-8 md:h-10 w-auto object-contain" />
+                  {useCmsLogo ? (
+                    <img
+                      src={siteLogoUrl}
+                      alt={siteName}
+                      className="h-8 md:h-10 w-auto object-contain"
+                      onError={() => setCmsLogoFailed(true)}
+                    />
                   ) : (
                     <Image src={headerLogoImg} alt={siteName} className="h-8 md:h-10 w-auto object-contain" height={40} width={200} />
                   )}
@@ -246,8 +257,13 @@ export default function Header() {
           <div className="absolute top-0 left-0 bottom-0 w-4/5 max-w-xs bg-white shadow-xl flex flex-col animate-in slide-in-from-left duration-300">
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                {siteLogoUrl ? (
-                  <img src={siteLogoUrl} alt={siteName} className="h-8 w-auto object-contain" />
+                {useCmsLogo ? (
+                  <img
+                    src={siteLogoUrl}
+                    alt={siteName}
+                    className="h-8 w-auto object-contain"
+                    onError={() => setCmsLogoFailed(true)}
+                  />
                 ) : (
                   <Image src={headerLogoImg} alt={siteName} className="h-8 w-auto object-contain" height={32} width={160} />
                 )}

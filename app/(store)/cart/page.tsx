@@ -58,7 +58,7 @@ export default function CartPage() {
   const total = subtotal - couponDiscount + shipping;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-100">
       <PageHero title="Shopping Cart" />
       <div className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <CartCountdown />
@@ -86,8 +86,8 @@ export default function CartPage() {
         ) : (
           <section className="py-6 sm:py-10">
             <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
-              <div className="lg:col-span-2">
-                <div className="rounded-2xl border border-emerald-50 bg-gray-50/50 p-4 sm:p-6 overflow-hidden">
+              <div className="lg:col-span-2 space-y-4">
+                <div className="rounded-2xl bg-white shadow-sm border border-gray-200/80 p-4 sm:p-6 overflow-hidden">
                   <div className="flex items-center justify-between mb-4 sm:mb-6">
                     <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                       Cart items ({cartItems.length})
@@ -98,15 +98,15 @@ export default function CartPage() {
                       </span>
                     )}
                   </div>
-                  <div className="space-y-4 sm:space-y-6">
+                  <div className="space-y-4">
                     {cartItems.map((item) => (
                       <div
                         key={`${item.id}-${item.variant || ''}`}
-                        className="flex flex-col sm:flex-row gap-4 pb-4 sm:pb-6 border-b border-emerald-100 last:border-0 last:pb-0"
+                        className="flex flex-col sm:flex-row gap-4 p-4 rounded-xl bg-gray-50/80 border border-gray-200/80"
                       >
                         <Link
                           href={`/product/${item.slug || item.id}`}
-                          className="relative w-full sm:w-28 h-40 sm:h-28 flex-shrink-0 rounded-xl bg-white border border-emerald-50 overflow-hidden"
+                          className="relative w-full sm:w-28 h-40 sm:h-28 flex-shrink-0 rounded-xl bg-white border border-gray-200 overflow-hidden shadow-sm"
                         >
                           <Image
                             src={item.image}
@@ -185,7 +185,7 @@ export default function CartPage() {
                 </div>
 
                 {savedItems.length > 0 && (
-                  <div className="mt-6 rounded-2xl border border-emerald-50 bg-gray-50/50 p-4 sm:p-6">
+                  <div className="rounded-2xl bg-white shadow-sm border border-gray-200/80 p-4 sm:p-6">
                     <h3 className="text-lg font-bold text-gray-900 mb-4">
                       Saved for later ({savedItems.length})
                     </h3>
@@ -217,7 +217,7 @@ export default function CartPage() {
               </div>
 
               <div className="lg:col-span-1">
-                <div className="rounded-2xl border border-emerald-50 bg-gray-50/50 p-4 sm:p-6 sticky top-24">
+                <div className="rounded-2xl bg-white shadow-sm border border-gray-200/80 border-l-4 border-l-emerald-500 p-4 sm:p-6 sticky top-24">
                   <p className="text-xs font-semibold tracking-[0.2em] text-emerald-600 uppercase mb-2">
                     Summary
                   </p>
@@ -240,10 +240,10 @@ export default function CartPage() {
                       </span>
                     </div>
                   </div>
-                  <div className="border-t border-emerald-100 pt-4 mb-4">
+                  <div className="rounded-xl bg-emerald-50 border border-emerald-100 pt-4 pb-4 px-4 -mx-4 mb-4">
                     <div className="flex justify-between text-base font-bold text-gray-900">
                       <span>Total</span>
-                      <span>GH₵{total.toFixed(2)}</span>
+                      <span className="text-emerald-700">GH₵{total.toFixed(2)}</span>
                     </div>
                   </div>
                   <AdvancedCouponSystem
@@ -264,7 +264,7 @@ export default function CartPage() {
                   >
                     Continue shopping
                   </Link>
-                  <div className="mt-6 pt-6 border-t border-emerald-100 space-y-2">
+                  <div className="mt-6 pt-6 border-t border-gray-200 space-y-2">
                     <div className="flex items-center gap-2 text-xs text-gray-600">
                       <i className="ri-shield-check-line text-emerald-600" />
                       <span>Secure checkout</span>

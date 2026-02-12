@@ -184,8 +184,8 @@ export const defaultSettings: SiteSettings = {
     // General
     site_name: 'Adjetman Sneakers',
     site_tagline: 'Your plug for authentic sneakers & drip',
-    site_logo: '/logo.png',
-    site_favicon: '/favicon.ico',
+    site_logo: '',
+    site_favicon: '',
     contact_email: '233isrealadjetey@gmail.com',
     contact_phone: '+233 53 471 2925',
     contact_address: 'Accra, Ghana',
@@ -279,7 +279,7 @@ export const defaultSettings: SiteSettings = {
     header_show_account: 'true',
 
     // Footer
-    footer_logo: '/logo.png',
+    footer_logo: '',
     footer_logo_height: '56',
     footer_newsletter_title: 'Join Our Community',
     footer_newsletter_subtitle: 'Get exclusive access to new arrivals, secret sales, and more.',
@@ -360,8 +360,16 @@ export function CMSProvider({ children }: { children: ReactNode }) {
                 const merged = { ...defaultSettings };
                 settingsData.forEach((row: any) => {
                     if (row.key && row.value !== null && row.value !== undefined) {
-                        // value is jsonb, could be a string or object
-                        merged[row.key] = typeof row.value === 'string' ? row.value : JSON.stringify(row.value);
+                        const raw = row.value;
+                        let str: string;
+                        if (typeof raw === 'string') {
+                            str = raw.trim();
+                        } else if (typeof raw === 'object' && raw !== null && typeof raw.url === 'string') {
+                            str = raw.url.trim();
+                        } else {
+                            str = JSON.stringify(raw);
+                        }
+                        if (str) merged[row.key] = str;
                     }
                 });
                 setSettings(merged);

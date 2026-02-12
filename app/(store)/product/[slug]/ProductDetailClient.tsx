@@ -275,26 +275,26 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
       <StructuredData data={productSchema} />
       <StructuredData data={breadcrumbSchema} />
 
-      <main className="min-h-screen bg-white">
-        <section className="py-4 sm:py-6 border-b border-emerald-50 bg-gray-50/30">
+      <main className="min-h-screen bg-gray-100">
+        <section className="py-4 sm:py-5 bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-600">
-              <Link href="/" className="hover:text-emerald-700 transition-colors">Home</Link>
-              <i className="ri-arrow-right-s-line text-gray-400 text-sm" />
-              <Link href="/shop" className="hover:text-emerald-700 transition-colors">Shop</Link>
-              <i className="ri-arrow-right-s-line text-gray-400 text-sm" />
-              <Link href={`/shop?category=${product.category?.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-emerald-700 transition-colors">{product.category}</Link>
-              <i className="ri-arrow-right-s-line text-gray-400 text-sm" />
+            <nav className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-500">
+              <Link href="/" className="hover:text-emerald-600 transition-colors">Home</Link>
+              <i className="ri-arrow-right-s-line text-gray-300 text-sm" />
+              <Link href="/shop" className="hover:text-emerald-600 transition-colors">Shop</Link>
+              <i className="ri-arrow-right-s-line text-gray-300 text-sm" />
+              <Link href={`/shop?category=${product.category?.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-emerald-600 transition-colors">{product.category}</Link>
+              <i className="ri-arrow-right-s-line text-gray-300 text-sm" />
               <span className="text-gray-900 font-medium truncate max-w-[180px] sm:max-w-[240px]">{product.name}</span>
             </nav>
           </div>
         </section>
 
-        <section className="py-8 sm:py-12">
+        <section className="py-6 sm:py-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-              <div>
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 border border-emerald-50 mb-4">
+            <div className="grid lg:grid-cols-2 gap-6 lg:gap-10">
+              <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-200/80">
+                <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 ring-2 ring-gray-100 mb-4">
                   <Image
                     src={product.images[selectedImage]}
                     alt={product.name}
@@ -334,20 +334,20 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                 )}
               </div>
 
-              <div>
-                <p className="text-xs font-semibold tracking-[0.2em] text-emerald-600 uppercase mb-1">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-200/80 border-l-4 border-l-emerald-500">
+                <span className="inline-block text-[11px] font-semibold tracking-[0.2em] text-emerald-600 uppercase mb-2">
                   {product.category}
-                </p>
+                </span>
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight">
                     {product.name}
                   </h1>
                   <button
                     onClick={() => setIsWishlisted(!isWishlisted)}
-                    className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full border-2 border-gray-200 hover:border-emerald-600 transition-colors cursor-pointer"
+                    className="w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-full bg-gray-100 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 transition-colors cursor-pointer"
                     aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
                   >
-                    <i className={`${isWishlisted ? 'ri-heart-fill text-red-500' : 'ri-heart-line text-gray-600'} text-lg`} />
+                    <i className={`${isWishlisted ? 'ri-heart-fill text-red-500' : 'ri-heart-line text-gray-500'} text-xl`} />
                   </button>
                 </div>
                 <div className="flex items-center gap-2 mb-4">
@@ -355,27 +355,29 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <i
                         key={star}
-                        className={`${star <= Math.round(product.rating) ? 'ri-star-fill text-amber-400' : 'ri-star-line text-gray-300'} text-base`}
+                        className={`${star <= Math.round(product.rating) ? 'ri-star-fill text-amber-400' : 'ri-star-line text-gray-300'} text-lg`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-gray-600">{Number(product.rating).toFixed(1)}</span>
+                  <span className="text-sm font-medium text-gray-600">{Number(product.rating).toFixed(1)}</span>
                 </div>
 
-                <div className="flex items-baseline gap-3 mb-6">
-                  {hasVariants && !selectedVariant ? (
-                    <span className="text-3xl lg:text-4xl font-bold text-gray-900">
-                      From GH₵{minVariantPrice.toFixed(2)}
-                    </span>
-                  ) : (
-                    <span className="text-3xl lg:text-4xl font-bold text-gray-900">GH₵{activePrice.toFixed(2)}</span>
-                  )}
-                  {product.compare_at_price && product.compare_at_price > activePrice && (
-                    <span className="text-xl text-gray-400 line-through">GH₵{product.compare_at_price.toFixed(2)}</span>
-                  )}
+                <div className="bg-emerald-50 rounded-2xl p-4 mb-6 border border-emerald-100">
+                  <div className="flex items-baseline gap-3 flex-wrap">
+                    {hasVariants && !selectedVariant ? (
+                      <span className="text-2xl sm:text-3xl font-bold text-emerald-800">
+                        From GH₵{minVariantPrice.toFixed(2)}
+                      </span>
+                    ) : (
+                      <span className="text-2xl sm:text-3xl font-bold text-emerald-800">GH₵{activePrice.toFixed(2)}</span>
+                    )}
+                    {product.compare_at_price && product.compare_at_price > activePrice && (
+                      <span className="text-lg text-gray-500 line-through">GH₵{product.compare_at_price.toFixed(2)}</span>
+                    )}
+                  </div>
                 </div>
 
-                <p className="text-gray-700 leading-relaxed mb-8 text-lg">{product.description}</p>
+                <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
 
                 {/* Color Selector */}
                 {hasVariants && product.colors.length > 0 && (
@@ -616,7 +618,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                   )}
                 </div>
 
-                <div className="rounded-2xl border border-emerald-50 bg-emerald-50/30 p-4 space-y-3">
+                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4 space-y-3">
                   <div className="flex items-center gap-3 text-sm text-gray-700">
                     <i className="ri-store-2-line text-emerald-600 text-lg" />
                     <span>Free store pickup available</span>
@@ -641,7 +643,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           </div>
         </section>
 
-        <section className="py-10 sm:py-14 bg-gray-50/50 border-t border-emerald-50">
+        <section className="py-10 sm:py-14 bg-gray-100 border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="border-b border-emerald-100 mb-6">
               <div className="flex flex-wrap gap-4 sm:gap-6">
@@ -662,13 +664,13 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
             </div>
 
             {activeTab === 'description' && (
-              <div className="rounded-2xl border border-emerald-50 bg-white p-6">
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{product.description}</p>
               </div>
             )}
 
             {activeTab === 'features' && (
-              <div className="rounded-2xl border border-emerald-50 bg-white p-6">
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Key features</h3>
                 <ul className="grid sm:grid-cols-2 gap-3">
                   {product.features.map((feature: string, index: number) => (
@@ -682,14 +684,14 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
             )}
 
             {activeTab === 'care' && (
-              <div className="rounded-2xl border border-emerald-50 bg-white p-6">
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Care instructions</h3>
                 <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{product.care}</p>
               </div>
             )}
 
             {activeTab === 'reviews' && (
-              <div id="reviews" className="rounded-2xl border border-emerald-50 bg-white p-6">
+              <div id="reviews" className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <ProductReviews productId={product.id} />
               </div>
             )}
