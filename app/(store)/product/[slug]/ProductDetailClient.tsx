@@ -96,28 +96,28 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           }
         });
 
+        const sortedImages = (productData.product_images || [])
+          .slice()
+          .sort((a: any, b: any) => (Number(a?.position) ?? 0) - (Number(b?.position) ?? 0))
+          .map((img: any) => img?.url)
+          .filter((url: any): url is string => typeof url === 'string' && url.length > 0);
         const transformedProduct = {
           ...productData,
-          images: productData.product_images?.sort((a: any, b: any) => a.position - b.position).map((img: any) => img.url) || [],
+          images: sortedImages.length > 0 ? sortedImages : ['https://via.placeholder.com/800x800?text=No+Image'],
           category: productData.categories?.name || 'Shop',
-          rating: productData.rating_avg || 0,
+          rating: productData.rating_avg ?? 0,
           reviewCount: 0,
-          stockCount: productData.quantity,
-          moq: productData.moq || 1,
+          stockCount: productData.quantity ?? 0,
+          moq: productData.moq ?? 1,
           colors: [...new Set(rawVariants.map((v: any) => v.color).filter(Boolean))],
           colorHexMap,
-          variants: rawVariants,
-          sizes: rawVariants.map((v: any) => v.name) || [],
+          variants: Array.isArray(rawVariants) ? rawVariants : [],
+          sizes: rawVariants.map((v: any) => v.name).filter(Boolean) || [],
           features: ['Premium Quality', 'Authentic Design'],
           featured: ['Premium Quality', 'Authentic Design'],
           care: 'Handle with care.',
           preorderShipping: productData.metadata?.preorder_shipping || null
         };
-
-        // Ensure at least one image/placeholder
-        if (transformedProduct.images.length === 0) {
-          transformedProduct.images = ['https://via.placeholder.com/800x800?text=No+Image'];
-        }
 
         setProduct(transformedProduct);
 
@@ -145,7 +145,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
             5 * 60 * 1000
           );
 
-          if (related) {
+          if (Array.isArray(related) && related.length > 0) {
             setRelatedProducts(related.map((p: any) => {
               const variants = p.product_variants || [];
               const hasVariants = variants.length > 0;
@@ -314,7 +314,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                   )}
                 </div>
 
-                {product.images.length > 1 && (
+                {(product.images?.length ?? 0) > 1 && (
                   <div className="grid grid-cols-4 gap-2 sm:gap-4">
                     {product.images.map((image: string, index: number) => (
                       <button
@@ -324,7 +324,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                           }`}
                       >
                         <Image
-                          src={image}
+                          src={image || 'https://via.placeholder.com/400x400?text=Image'}
                           alt={`${product.name} view ${index + 1}`}
                           fill
                           className="object-cover object-center"
@@ -383,7 +383,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                 <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
 
                 {/* Color Selector */}
-                {hasVariants && product.colors.length > 0 && (
+                {hasVariants && (product.colors?.length ?? 0) > 0 && (
                   <div className="mb-6">
                     <label className="block font-semibold text-gray-900 mb-3">
                       Color: {selectedColor ? (
@@ -393,9 +393,9 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                       )}
                     </label>
                     <div className="flex flex-wrap gap-3">
-                      {product.colors.map((color: string) => {
+                      {(product.colors || []).map((color: string) => {
                         const isSelected = selectedColor === color;
-                        const colorVariants = product.variants.filter((v: any) => v.color === color);
+                        const colorVariants = (product.variants || []).filter((v: any) => v.color === color);
                         const colorStock = colorVariants.reduce((sum: number, v: any) => sum + (v.stock ?? v.quantity ?? 0), 0);
                         const isOutOfStock = colorStock === 0 && product.stockCount === 0;
                         return (
@@ -404,7 +404,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                             onClick={() => {
                               setSelectedColor(color);
                               // If only one variant for this color, auto-select it
-                              const matching = product.variants.filter((v: any) => v.color === color);
+                              const matching = (product.variants || []).filter((v: any) => v.color === color);
                               if (matching.length === 1) {
                                 setSelectedVariant(matching[0]);
                                 setSelectedSize(matching[0].name);
@@ -434,12 +434,13 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                 {/* Size / Name Variant Selector */}
                 {hasVariants && (() => {
                   // Filter variants: if colors exist and one is selected, show only matching; otherwise show all
-                  const hasColors = product.colors.length > 0;
+                  const hasColors = (product.colors?.length ?? 0) > 0;
+                  const variantsList = product.variants || [];
                   const visibleVariants = hasColors && selectedColor
-                    ? product.variants.filter((v: any) => v.color === selectedColor)
+                    ? variantsList.filter((v: any) => v.color === selectedColor)
                     : hasColors
                       ? [] // Don't show name variants until a color is picked
-                      : product.variants;
+                      : variantsList;
 
                   // Check if we need to show the name selector (skip if all visible variants have the same name or only 1)
                   const uniqueNames = [...new Set(visibleVariants.map((v: any) => v.name).filter(Boolean))];
@@ -457,7 +458,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                           )}
                         </label>
                         <div className="flex flex-wrap gap-3">
-                          {product.variants.map((variant: any) => {
+                          {(product.variants || []).map((variant: any) => {
                             const isSelected = selectedVariant?.id === variant.id || selectedVariant?.name === variant.name;
                             const variantStock = variant.stock ?? variant.quantity ?? 0;
                             const isOutOfStock = variantStock === 0 && product.stockCount === 0;
@@ -478,7 +479,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                               >
                                 <span>{variant.name}</span>
                                 <span className={`text-xs mt-0.5 ${isSelected ? 'text-emerald-600' : 'text-gray-500'}`}>
-                                  GH₵{(variant.price || product.price).toFixed(2)}
+                                  GH₵{(variant.price ?? product.price ?? 0).toFixed(2)}
                                 </span>
                               </button>
                             );
@@ -520,7 +521,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                               >
                                 <span>{variant.name}</span>
                                 <span className={`text-xs mt-0.5 ${isSelected ? 'text-emerald-600' : 'text-gray-500'}`}>
-                                  GH₵{(variant.price || product.price).toFixed(2)}
+                                  GH₵{(variant.price ?? product.price ?? 0).toFixed(2)}
                                 </span>
                               </button>
                             );
@@ -668,7 +669,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
 
             {activeTab === 'description' && (
               <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{product.description}</p>
+                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{product.description || product.name || 'No description available.'}</p>
               </div>
             )}
 
@@ -676,7 +677,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
               <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Key features</h3>
                 <ul className="grid sm:grid-cols-2 gap-3">
-                  {product.features.map((feature: string, index: number) => (
+                  {(product.features || []).map((feature: string, index: number) => (
                     <li key={index} className="flex items-start gap-2">
                       <i className="ri-checkbox-circle-fill text-emerald-600 mt-0.5 flex-shrink-0" />
                       <span className="text-gray-700 text-sm sm:text-base">{feature}</span>
@@ -689,13 +690,13 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
             {activeTab === 'care' && (
               <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Care instructions</h3>
-                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{product.care}</p>
+                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{product.care || 'Handle with care.'}</p>
               </div>
             )}
 
             {activeTab === 'reviews' && (
               <div id="reviews" className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <ProductReviews productId={product.id} />
+                <ProductReviews productId={product.id || ''} />
               </div>
             )}
           </div>
