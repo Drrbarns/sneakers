@@ -371,46 +371,48 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-emerald-300/70 scrollbar-track-transparent">
-            {(latestProducts.length ? latestProducts : popularProducts).map(
-              (product) => (
-                <div
-                  key={product.id}
-                  className="min-w-[220px] max-w-[260px] flex-shrink-0 rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-emerald-900/5">
-                    <Image
-                      src={
-                        product.product_images?.[0]?.url ||
-                        'https://via.placeholder.com/400x500'
-                      }
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-3">
-                    <p className="text-xs uppercase tracking-wide text-emerald-500 mb-1">
-                      New drop
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900 line-clamp-2">
-                      {product.name}
-                    </p>
-                    <div className="mt-2 flex items-center justify-between">
-                      <span className="text-sm font-bold text-gray-900">
-                        GH₵{Number(product.price || 0).toFixed(2)}
-                      </span>
-                      <Link
-                        href={`/product/${product.slug}`}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white hover:bg-emerald-700 text-sm"
-                      >
-                        <i className="ri-arrow-right-line" />
-                      </Link>
+          <div className="relative overflow-hidden">
+            <div className="flex gap-4 animate-just-landed-scroll pb-2 [--card-width:240px] hover:[animation-play-state:paused]">
+              {[...(latestProducts.length ? latestProducts : popularProducts), ...(latestProducts.length ? latestProducts : popularProducts)].map(
+                (product, index) => (
+                  <div
+                    key={`${product.id}-${index}`}
+                    className="min-w-[220px] max-w-[260px] w-[var(--card-width)] flex-shrink-0 rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-emerald-900/5">
+                      <Image
+                        src={
+                          product.product_images?.[0]?.url ||
+                          'https://via.placeholder.com/400x500'
+                        }
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-3">
+                      <p className="text-xs uppercase tracking-wide text-emerald-500 mb-1">
+                        New drop
+                      </p>
+                      <p className="text-sm font-semibold text-gray-900 line-clamp-2">
+                        {product.name}
+                      </p>
+                      <div className="mt-2 flex items-center justify-between">
+                        <span className="text-sm font-bold text-gray-900">
+                          GH₵{Number(product.price || 0).toFixed(2)}
+                        </span>
+                        <Link
+                          href={`/product/${product.slug}`}
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white hover:bg-emerald-700 text-sm"
+                        >
+                          <i className="ri-arrow-right-line" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            )}
+                )
+              )}
+            </div>
           </div>
         </div>
       </AnimatedSection>
