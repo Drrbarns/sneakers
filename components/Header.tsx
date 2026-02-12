@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import MiniCart from './MiniCart';
 import { useCart } from '@/context/CartContext';
 import { supabase } from '@/lib/supabase';
 import { useCMS } from '@/context/CMSContext';
 import AnnouncementBar from './AnnouncementBar';
+import headerLogoImg from '../black.png';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,7 +21,7 @@ export default function Header() {
   const { getSetting, getSettingJSON } = useCMS();
 
   const siteName = getSetting('site_name') || 'Adjetman Sneakers';
-  const siteLogo = getSetting('site_logo') || '/logo.png';
+  const siteLogoUrl = getSetting('site_logo');
   const showSearch = getSetting('header_show_search') !== 'false';
   const showWishlist = getSetting('header_show_wishlist') !== 'false';
   const showCart = getSetting('header_show_cart') !== 'false';
@@ -87,7 +89,11 @@ export default function Header() {
                   className="flex items-center"
                   aria-label="Go to homepage"
                 >
-                  <img src={siteLogo} alt={siteName} className="h-8 md:h-10 w-auto object-contain" />
+                  {siteLogoUrl ? (
+                    <img src={siteLogoUrl} alt={siteName} className="h-8 md:h-10 w-auto object-contain" />
+                  ) : (
+                    <Image src={headerLogoImg} alt={siteName} className="h-8 md:h-10 w-auto object-contain" height={40} width={200} />
+                  )}
                 </Link>
               </div>
 

@@ -1,9 +1,11 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useCMS } from '@/context/CMSContext';
 import { useRecaptcha } from '@/hooks/useRecaptcha';
+import footerLogoImg from '../white.png';
 
 function FooterSection({ title, children }: { title: string, children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,8 +68,8 @@ export default function Footer() {
   const socialTiktok = getSetting('social_tiktok') || '';
   const socialYoutube = getSetting('social_youtube') || '';
 
-  // CMS-driven footer config
-  const footerLogo = getSetting('footer_logo') || getSetting('site_logo') || '/logo.png';
+  // CMS-driven footer config (default: Adjetman Sneakers white logo)
+  const footerLogoUrl = getSetting('footer_logo') || getSetting('site_logo');
   const showNewsletter = getSetting('footer_show_newsletter') !== 'false';
   const newsletterTitle = getSetting('footer_newsletter_title') || 'Join Our Community';
   const newsletterSubtitle = getSetting('footer_newsletter_subtitle') || 'Get exclusive access to new arrivals, secret sales, and more.';
@@ -144,7 +146,11 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1 space-y-6">
             <Link href="/" className="inline-block">
-              <img src={footerLogo} alt={siteName} className="h-14 w-auto object-contain brightness-0 invert opacity-90" />
+              {footerLogoUrl ? (
+                <img src={footerLogoUrl} alt={siteName} className="h-14 w-auto object-contain brightness-0 invert opacity-90" />
+              ) : (
+                <Image src={footerLogoImg} alt={siteName} className="h-14 w-auto object-contain opacity-95" height={56} width={220} />
+              )}
             </Link>
             <p className="text-emerald-200/80 leading-relaxed text-sm">
               {siteTagline.replace(/Less\.?$/i, '').trimEnd()}{' '}
