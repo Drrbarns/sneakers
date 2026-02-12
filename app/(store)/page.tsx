@@ -11,6 +11,8 @@ import ProductCard, {
 } from '@/components/ProductCard';
 import AnimatedSection, { AnimatedGrid } from '@/components/AnimatedSection';
 import { usePageTitle } from '@/hooks/usePageTitle';
+import heroSneakerImg from '../../cc865524879023ad80ead9ec87c8e0eec2b66dc8.png';
+import bannerSneakerImg from '../../ad9048e4060aae008ec4a17cfe2d9bdb52f58f97.png';
 
 export default function Home() {
   usePageTitle('');
@@ -47,8 +49,8 @@ export default function Home() {
     getSetting('hero_subheadline') ||
     'Discover the perfect blend of comfort, style and quality. Our exclusive collections are designed to elevate your look and support every step.';
   // Use custom hero sneaker image by default (can be overridden from CMS)
-  const heroImage =
-    getSetting('hero_image') || '/cc865524879023ad80ead9ec87c8e0eec2b66dc8.png';
+  const heroImageSetting = getSetting('hero_image');
+  const heroImage = heroImageSetting || heroSneakerImg;
   const heroPrimaryText = getSetting('hero_primary_btn_text') || 'Shop Now';
   const heroPrimaryLink = getSetting('hero_primary_btn_link') || '/shop';
   const heroSecondaryText =
@@ -268,7 +270,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-6">
             <div className="rounded-3xl overflow-hidden relative bg-gray-900">
               <Image
-                src="/ad9048e4060aae008ec4a17cfe2d9bdb52f58f97.png"
+                src={bannerSneakerImg}
                 alt="Basketball collection"
                 fill
                 className="object-cover object-center"
@@ -405,7 +407,7 @@ export default function Home() {
             <div className="w-full md:w-1/3 relative py-6 pr-6">
               <div className="relative h-40 sm:h-48 md:h-full">
                 <Image
-                  src="/ad9048e4060aae008ec4a17cfe2d9bdb52f58f97.png"
+                  src={bannerSneakerImg}
                   alt="Ascent Shoes"
                   fill
                   className="object-contain object-center drop-shadow-2xl"
