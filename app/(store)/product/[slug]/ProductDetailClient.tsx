@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { cachedQuery } from '@/lib/query-cache';
@@ -43,6 +42,10 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
   const { addToCart } = useCart();
 
   useEffect(() => {
+    if (!slug || typeof slug !== 'string') {
+      setLoading(false);
+      return;
+    }
     async function fetchProduct() {
       try {
         setLoading(true);
@@ -228,6 +231,17 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
     window.location.href = '/checkout';
   };
 
+  if (!slug || typeof slug !== 'string') {
+    return (
+      <div className="min-h-screen bg-white py-20 flex justify-center items-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Product not found</h2>
+          <Link href="/shop" className="text-emerald-700 hover:underline">Return to Shop</Link>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white py-12 flex justify-center items-center">
@@ -307,15 +321,11 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
             <div className="grid lg:grid-cols-2 gap-6 lg:gap-10">
               <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-200/80">
                 <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 ring-2 ring-gray-100 mb-4">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={(product.images?.[selectedImage] ?? product.images?.[0]) || 'https://via.placeholder.com/800x800?text=No+Image'}
                     alt={product.name || 'Product'}
-                    fill
-                    className="object-cover object-center"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                    quality={80}
-                    unoptimized
+                    className="w-full h-full object-cover object-center"
                   />
                   {discount > 0 && (
                     <span className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-red-500 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full">
@@ -333,14 +343,11 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                         className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${selectedImage === index ? 'border-emerald-600 ring-2 ring-emerald-200' : 'border-emerald-50 hover:border-emerald-200'
                           }`}
                       >
-                        <Image
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
                           src={image || 'https://via.placeholder.com/400x400?text=Image'}
                           alt={`${product.name} view ${index + 1}`}
-                          fill
-                          className="object-cover object-center"
-                          sizes="(max-width: 1024px) 25vw, 12vw"
-                          quality={60}
-                          unoptimized
+                          className="w-full h-full object-cover object-center"
                         />
                       </button>
                     ))}
