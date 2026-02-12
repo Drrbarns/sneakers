@@ -20,37 +20,44 @@ export default function FAQsPage() {
     {
       category: 'orders',
       question: 'How do I place an order?',
-      answer: 'Browse our products, add items to your cart, proceed to checkout, provide your delivery address, select payment method, and confirm your order. You\'ll receive an email confirmation with your order details and tracking number.'
+      answer:
+        'Browse our sneakers and accessories, add your favourites to cart, proceed to checkout, provide your delivery address, select a payment method and confirm your order. You\'ll receive an SMS/email confirmation with your order details and tracking number.'
     },
     {
       category: 'orders',
       question: 'Can I modify or cancel my order?',
-      answer: 'You can modify or cancel your order within 1 hour of placing it. Contact our customer service immediately at +233 24 123 4567 or hello@premiumstore.com. Once an order is processed, modifications may not be possible.'
+      answer:
+        'You can modify or cancel your order within 1 hour of placing it. Contact our customer service immediately. Once an order has been packed for dispatch, changes may no longer be possible.'
     },
     {
       category: 'orders',
       question: 'How do I track my order?',
-      answer: 'After your order ships, you\'ll receive a tracking number via email and SMS. Visit our Order Tracking page and enter your order number and email address to see real-time updates on your delivery status.'
+      answer:
+        'After your order ships, you\'ll receive a tracking number via email and SMS. Visit our Order Tracking page and enter your order number to see real-time updates on where your sneakers and accessories are.'
     },
     {
       category: 'orders',
       question: 'What if I receive the wrong item?',
-      answer: 'We sincerely apologise if you receive the wrong item. Contact us within 48 hours with photos of the item received. We\'ll arrange for the correct item to be sent immediately and collect the wrong item at no cost to you.'
+      answer:
+        'We sincerely apologise if you receive the wrong pair or product. Contact us within 48 hours with photos of what you received. We\'ll arrange for the correct item to be sent and collect the wrong one at no cost to you.'
     },
     {
       category: 'shipping',
       question: 'What are your delivery times?',
-      answer: 'Standard delivery takes 2-5 business days within Ghana. Express delivery (next-day) is available for Accra and Kumasi. Orders placed before 2pm are dispatched same day. Remote areas may take 5-7 business days.'
+      answer:
+        'Standard delivery takes 2–5 business days within Ghana. Express delivery (next-day) is available for selected locations. Orders placed before 2pm are usually dispatched same day. Remote areas may take 5–7 business days.'
     },
     {
       category: 'shipping',
       question: 'How much does shipping cost?',
-      answer: 'Standard shipping costs GHS 20. Express delivery costs GHS 40. Orders over GHS 300 qualify for FREE standard shipping. Store pickup is also available at no charge from our Accra location.'
+      answer:
+        'Standard shipping costs are calculated at checkout based on your location. We often run free shipping promos on sneaker and combo orders over a certain amount – look out for banners on the site.'
     },
     {
       category: 'shipping',
       question: 'Do you ship outside Ghana?',
-      answer: 'Currently, we only ship within Ghana. We\'re working on expanding to neighbouring West African countries. Sign up for our newsletter to be notified when international shipping becomes available.'
+      answer:
+        'Currently, we only ship within Ghana. We\'re working on expanding to neighbouring West African countries. Sign up for our newsletter to be notified when international sneaker shipping becomes available.'
     },
     {
       category: 'shipping',
@@ -60,12 +67,14 @@ export default function FAQsPage() {
     {
       category: 'returns',
       question: 'What is your return policy?',
-      answer: 'We offer a 14-day return policy for unused items in original packaging. Simply initiate a return from your account, print the return label, and ship it back. Refunds are processed within 5-7 business days after we receive the item.'
+      answer:
+        'We offer a 14-day return policy for unused sneakers and accessories in original packaging. Start your return from the Returns page or your account, then follow the steps. Refunds are processed within 5–7 business days after we receive and inspect the items.'
     },
     {
       category: 'returns',
       question: 'Which items cannot be returned?',
-      answer: 'For hygiene reasons, we cannot accept returns on opened cosmetics, intimate apparel, earrings, or perishable goods. Custom or personalised items are also non-returnable unless defective.'
+      answer:
+        'For hygiene reasons, we cannot accept returns on worn socks or heavily used items. Custom or personalised products are also non-returnable unless defective.'
     },
     {
       category: 'returns',
@@ -143,10 +152,10 @@ export default function FAQsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              Frequently Asked Questions
+              Sneakers & Orders – FAQs
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Find quick answers to common questions about ordering, shipping, returns, and more.
+              Find quick answers about buying sneakers, slides, Crocs, Birkenstock, bags, watches, belts, tops, jeans, socks, orders, shipping and returns.
             </p>
 
             <div className="relative">

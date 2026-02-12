@@ -7,29 +7,43 @@ import PageHero from '@/components/PageHero';
 import { usePageTitle } from '@/hooks/usePageTitle';
 
 export default function AboutPage() {
-  usePageTitle('Our Story');
+  usePageTitle('About KicksPlug – Your Trusted Sneakers & Streetwear Store');
   const { getSetting } = useCMS();
   const [activeTab, setActiveTab] = useState('story');
 
-  const siteName = getSetting('site_name') || 'Our Store';
+  const siteName = getSetting('site_name') || 'KicksPlug';
   const primaryColor = getSetting('primary_color') || '#059669';
 
   // CMS-driven content
-  const heroTitle = getSetting('about_hero_title') || 'Our Story';
-  const heroSubtitle = getSetting('about_hero_subtitle') || 'Learn about who we are and what we do.';
-  const storyTitle = getSetting('about_story_title') || 'From Passion to Business';
+  const heroTitle =
+    getSetting('about_hero_title') ||
+    'More than sneakers, it’s a lifestyle plug';
+  const heroSubtitle =
+    getSetting('about_hero_subtitle') ||
+    'KicksPlug is your trusted source for real sneakers and everyday pieces that keep your style sharp from head to toe.';
+  const storyTitle =
+    getSetting('about_story_title') || 'From sneaker passion to KicksPlug';
   const storyContent = getSetting('about_story_content') || '';
   const storyImage = getSetting('about_story_image') || '/about.jpg';
   const founderName = getSetting('about_founder_name') || 'Founder';
   const founderTitle = getSetting('about_founder_title') || 'CEO';
-  const mission1Title = getSetting('about_mission1_title') || 'Direct Sourcing';
+  const mission1Title =
+    getSetting('about_mission1_title') || 'Sneaker-first selection';
   const mission1Content = getSetting('about_mission1_content') || '';
-  const mission2Title = getSetting('about_mission2_title') || 'Quality For Everyone';
+  const mission2Title =
+    getSetting('about_mission2_title') || 'Complete the fit, head to toe';
   const mission2Content = getSetting('about_mission2_content') || '';
-  const valuesTitle = getSetting('about_values_title') || 'Why Shop With Us?';
-  const valuesSubtitle = getSetting('about_values_subtitle') || 'Quality and value, guaranteed.';
-  const ctaTitle = getSetting('about_cta_title') || 'Ready to experience the difference?';
-  const ctaSubtitle = getSetting('about_cta_subtitle') || 'Join thousands of happy customers.';
+  const valuesTitle =
+    getSetting('about_values_title') || 'Why shop sneakers with us?';
+  const valuesSubtitle =
+    getSetting('about_values_subtitle') ||
+    'Sneaker-first curation, honest pricing and pieces that actually last.';
+  const ctaTitle =
+    getSetting('about_cta_title') ||
+    'Ready to step into better sneakers?';
+  const ctaSubtitle =
+    getSetting('about_cta_subtitle') ||
+    'Discover curated sneakers, slides, Crocs, Birkenstock, bags, watches, belts, tops, jeans and socks – all in one place.';
 
   // Story paragraphs (split by newlines)
   const storyParagraphs = storyContent.split('\n').filter((p: string) => p.trim());
@@ -37,23 +51,27 @@ export default function AboutPage() {
   const values = [
     {
       icon: 'ri-verified-badge-line',
-      title: 'Authenticity',
-      description: 'Handpicked with care. We document the sourcing journey so you know exactly what you are buying.'
+      title: 'Authentic products only',
+      description:
+        'Every sneaker, slide, Crocs pair and accessory is sourced from trusted partners. No fakes, no shortcuts – just real quality you can feel.'
     },
     {
       icon: 'ri-money-dollar-circle-line',
-      title: 'Unbeatable Value',
-      description: 'Direct from the factory to you. We cut out the middleman to offer premium quality at wholesale prices.'
+      title: 'Sneaker-first value',
+      description:
+        'We focus our budget on the parts that matter most – better materials, better comfort and better designs – while keeping prices fair.'
     },
     {
       icon: 'ri-star-smile-line',
-      title: 'Quality Assured',
-      description: 'Every product is inspected personally. If it doesn\'t meet our standards, it doesn\'t make it to the store.'
+      title: 'Built to be worn',
+      description:
+        'From cushioning and grip on sneakers to the feel of your tops, jeans and socks, everything is chosen to handle real, everyday wear.'
     },
     {
       icon: 'ri-group-line',
-      title: 'Community First',
-      description: 'Built on trust and connection. We listen to our customers and find the products you actually want.'
+      title: 'Community-driven choices',
+      description:
+        'We listen to what our customers actually wear – from popular sneaker silhouettes to must-have bags and accessories – and stock more of what you love.'
     }
   ];
 
@@ -96,13 +114,13 @@ export default function AboutPage() {
                 ) : (
                   <>
                     <p>
-                      Our journey started with a simple vision: to bring quality products directly to you at prices that make sense.
+                      Our journey started with a simple vision: build a store where the sneakers come first – and everything else is chosen to match them.
                     </p>
                     <p>
-                      By sourcing directly and cutting out middlemen, we pass the savings on to our customers while maintaining the highest quality standards.
+                      At <strong>{siteName}</strong>, we hand-pick premium sneakers and then complete the look with slides, Crocs, Birkenstock, side bags, backpacks, watches, belts, tops, jeans and socks, so every order feels like a full fit, not just a pair of shoes.
                     </p>
                     <p>
-                      <strong>{siteName}</strong> was born from this commitment to quality, value, and community.
+                      What began as a love for kicks has grown into a trusted plug for people who want authentic style, everyday comfort and fair prices.
                     </p>
                   </>
                 )}
@@ -134,7 +152,8 @@ export default function AboutPage() {
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-4">{mission1Title}</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
-                {mission1Content || 'We believe in going to the source. By visiting manufacturers directly, we eliminate middlemen who inflate prices. This hands-on approach guarantees that you aren\'t paying for invisible markups—just great products.'}
+                {mission1Content ||
+                  'We build every collection from the sneakers up. Classic pairs, everyday beaters and statement kicks are the heart of KicksPlug – everything else in the store is chosen to make those sneakers look and feel even better.'}
               </p>
             </div>
             <div className="bg-amber-50 p-10 rounded-3xl border border-amber-100">
@@ -143,7 +162,8 @@ export default function AboutPage() {
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-4">{mission2Title}</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
-                {mission2Content || '"Luxury" shouldn\'t be exclusive. Our mission is to democratize access to quality goods. Whether it\'s skincare, fashion, or home essentials, we believe everyone deserves the best, regardless of their budget.'}
+                {mission2Content ||
+                  'We don’t just stop at sneakers. Slides, Crocs, Birkenstock, side bags, backpacks, watches, belts, tops, jeans and socks are all curated to work together, so you can build full outfits around your kicks without overthinking it.'}
               </p>
             </div>
           </div>

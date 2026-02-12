@@ -163,7 +163,9 @@ function OrderTrackingContent() {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">Track Your Order</h1>
-            <p className="text-gray-600">Enter your order number or tracking number to track your shipment</p>
+            <p className="text-gray-600">
+              Enter your order number or tracking number to see where your sneakers and accessories are right now.
+            </p>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm p-8">

@@ -82,8 +82,10 @@ export default function ReturnsPortalPage() {
       <Header />
       <main className="min-h-screen bg-gray-50 py-12">
         <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Returns Portal</h1>
-          <p className="text-gray-600 mb-8">Start your return or exchange process</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Returns & Exchanges</h1>
+          <p className="text-gray-600 mb-8">
+            Start a return or exchange for your sneakers, slides, Crocs, Birkenstock and accessories.
+          </p>
 
           <div className="mb-8">
             <div className="flex items-center justify-between">
@@ -156,10 +158,10 @@ export default function ReturnsPortalPage() {
                   <div className="text-sm text-blue-700">
                     <p className="font-semibold mb-1">Return Policy Highlights</p>
                     <ul className="space-y-1">
-                      <li>• Returns accepted within 30 days of delivery</li>
-                      <li>• Items must be unused with original tags</li>
-                      <li>• Free return shipping for defective items</li>
-                      <li>• Refunds processed within 5-7 business days</li>
+                      <li>• Returns accepted within 14 days of delivery</li>
+                      <li>• Sneakers and accessories must be unused with original tags and box</li>
+                      <li>• Free return shipping for defective or wrong items received</li>
+                      <li>• Refunds processed within 5–7 business days after inspection</li>
                     </ul>
                   </div>
                 </div>

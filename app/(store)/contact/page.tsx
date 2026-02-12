@@ -14,7 +14,7 @@ interface TeamContact {
 }
 
 export default function ContactPage() {
-  usePageTitle('Contact Us');
+  usePageTitle('Contact KicksPlug – Sneakers & Orders Support');
   const { getSetting, getSettingJSON } = useCMS();
   const [formData, setFormData] = useState({
     name: '',
@@ -79,8 +79,10 @@ export default function ContactPage() {
   const contactEmail = getSetting('contact_email') || 'support@standardstore.com';
   const contactPhone = getSetting('contact_phone') || '0546014734';
   const contactAddress = getSetting('contact_address') || 'Accra, Ghana';
-  const heroTitle = getSetting('contact_hero_title') || 'Get In Touch';
-  const heroSubtitle = getSetting('contact_hero_subtitle') || 'Have a question or need assistance? Our friendly team is here to help.';
+  const heroTitle = getSetting('contact_hero_title') || 'Talk to your sneaker plug';
+  const heroSubtitle =
+    getSetting('contact_hero_subtitle') ||
+    'Need help with sneaker sizes, styling, orders or delivery? Our friendly team is here to help you get the right pair and the right fit.';
   const contactHours = getSetting('contact_hours') || 'Mon-Fri, 8am-6pm GMT';
   const contactMapLink = getSetting('contact_map_link') || 'https://maps.google.com';
   const teamContacts = getSettingJSON<TeamContact[]>('contact_team_json', []);
