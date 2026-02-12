@@ -18,7 +18,7 @@ export default function Header() {
   const { cartCount, isCartOpen, setIsCartOpen } = useCart();
   const { getSetting, getSettingJSON } = useCMS();
 
-  const siteName = getSetting('site_name') || 'StandardStore';
+  const siteName = getSetting('site_name') || 'Adjetman Sneakers';
   const siteLogo = getSetting('site_logo') || '/logo.png';
   const showSearch = getSetting('header_show_search') !== 'false';
   const showWishlist = getSetting('header_show_wishlist') !== 'false';

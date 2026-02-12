@@ -56,8 +56,8 @@ export default function Footer() {
     }
   };
 
-  const siteName = getSetting('site_name') || 'StandardStore';
-  const siteTagline = getSetting('site_tagline') || 'Premium Shopping Experience';
+  const siteName = getSetting('site_name') || 'Adjetman Sneakers';
+  const siteTagline = getSetting('site_tagline') || 'Your plug for authentic sneakers & drip';
   const contactEmail = getSetting('contact_email') || '';
   const contactPhone = getSetting('contact_phone') || '';
   const socialFacebook = getSetting('social_facebook') || '';

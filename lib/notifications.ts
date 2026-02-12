@@ -3,9 +3,9 @@ import { supabase } from '@/lib/supabase';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 'missing_api_key');
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@store.com';
-const STORE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'My Store';
+const STORE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
 const EMAIL_FROM = process.env.EMAIL_FROM || `${STORE_NAME} <noreply@store.com>`;
-const SMS_SENDER_ID = process.env.SMS_SENDER_ID || 'MyStore';
+const SMS_SENDER_ID = process.env.SMS_SENDER_ID || 'Adjetman';
 const BRAND = {
     name: STORE_NAME,
     color: '#047857',

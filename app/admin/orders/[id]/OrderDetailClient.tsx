@@ -24,7 +24,7 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
   const [trackingNumber, setTrackingNumber] = useState('');
   const [adminNotes, setAdminNotes] = useState('');
   const [statusUpdating, setStatusUpdating] = useState(false);
-  const [storeName, setStoreName] = useState('My Store');
+  const [storeName, setStoreName] = useState('Adjetman Sneakers');
   const [storeEmail, setStoreEmail] = useState('');
 
   const handlePrint = () => {

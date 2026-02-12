@@ -16,8 +16,8 @@ interface SEOProps {
 }
 
 export function generateMetadata({
-  title = 'Premium Online Shopping in Ghana',
-  description = 'Discover curated premium products with fast delivery across Ghana. Shop fashion, home decor, electronics and more with secure payment and 30-day returns.',
+  title = 'Adjetman Sneakers – Authentic Sneakers & Streetwear',
+  description = 'Shop Adjetman Sneakers for authentic sneakers, slides, Crocs, Birkenstock, bags, watches, belts, tops, jeans and socks with fast Ghana-wide delivery.',
   keywords = [],
   ogImage = 'https://readdy.ai/api/search-image?query=modern%20premium%20ecommerce%20online%20shopping%20platform%20elegant%20design&width=1200&height=630&seq=ogimage&orientation=landscape',
   ogType = 'website',
@@ -29,8 +29,8 @@ export function generateMetadata({
   author,
   noindex = false
 }: SEOProps): Metadata {
-  const siteName = 'PremiumShop Ghana';
-  const siteUrl = 'https://premiumshop.com';
+  const siteName = 'Adjetman Sneakers';
+  const siteUrl = 'https://adjetmansneakers.vercel.app';
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 
   const defaultKeywords = [
@@ -114,7 +114,7 @@ export function generateProductSchema(product: {
     sku: product.sku,
     brand: {
       '@type': 'Brand',
-      name: product.brand || 'PremiumShop'
+      name: product.brand || 'Adjetman Sneakers'
     },
     offers: {
       '@type': 'Offer',
@@ -162,12 +162,12 @@ export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'PremiumShop Ghana',
-    url: 'https://premiumshop.com',
+    name: 'Adjetman Sneakers',
+    url: 'https://adjetmansneakers.vercel.app',
     logo: 'https://readdy.ai/api/search-image?query=premium%20shop%20logo%20elegant%20modern&width=200&height=200&seq=logo&orientation=squarish',
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+233-XX-XXX-XXXX',
+      telephone: '+233-53-471-2925',
       contactType: 'Customer Service',
       areaServed: 'GH',
       availableLanguage: ['English']
@@ -184,13 +184,13 @@ export function generateWebsiteSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'PremiumShop Ghana',
-    url: 'https://premiumshop.com',
+    name: 'Adjetman Sneakers',
+    url: 'https://adjetmansneakers.vercel.app',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://premiumshop.com/shop?search={search_term_string}'
+        urlTemplate: 'https://adjetmansneakers.vercel.app/shop?search={search_term_string}'
       },
       'query-input': 'required name=search_term_string'
     }

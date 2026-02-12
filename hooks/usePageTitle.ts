@@ -5,7 +5,7 @@ import { useCMS } from '@/context/CMSContext';
 
 export function usePageTitle(title: string) {
   const { getSetting } = useCMS();
-  const siteName = getSetting('site_name') || 'My Store';
+  const siteName = getSetting('site_name') || 'Adjetman Sneakers';
 
   useEffect(() => {
     document.title = title ? `${title} | ${siteName}` : siteName;

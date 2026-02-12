@@ -48,9 +48,8 @@ export default function Home() {
   const heroSubheadline =
     getSetting('hero_subheadline') ||
     'Discover the perfect blend of comfort, style and quality. Our exclusive collections are designed to elevate your look and support every step.';
-  // Use custom hero sneaker image by default (can be overridden from CMS)
-  const heroImageSetting = getSetting('hero_image');
-  const heroImage = heroImageSetting || heroSneakerImg;
+  // Always use the custom hero sneaker image provided for the design
+  const heroImage = heroSneakerImg;
   const heroPrimaryText = getSetting('hero_primary_btn_text') || 'Shop Now';
   const heroPrimaryLink = getSetting('hero_primary_btn_link') || '/shop';
   const heroSecondaryText =
@@ -84,13 +83,13 @@ export default function Home() {
     <main className="flex-col items-center justify-between min-h-screen bg-white">
       {renderBanners()}
 
-      {/* Hero Section – matches KicksPlug hero */}
+      {/* Hero Section – matches Adjetman Sneakers hero */}
       <section className="relative w-full bg-hero-grid text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 flex flex-col lg:flex-row items-center gap-10">
           {/* Left: Text */}
           <div className="w-full lg:w-1/2 space-y-6">
             <span className="inline-flex items-center rounded-full bg-white/10 border border-white/30 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em]">
-              KicksPlug
+              Adjetman Sneakers
             </span>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.2rem] font-extrabold leading-tight">
               {heroHeadline}

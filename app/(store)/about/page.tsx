@@ -7,11 +7,11 @@ import PageHero from '@/components/PageHero';
 import { usePageTitle } from '@/hooks/usePageTitle';
 
 export default function AboutPage() {
-  usePageTitle('About KicksPlug – Your Trusted Sneakers & Streetwear Store');
+usePageTitle('About Adjetman Sneakers – Your Trusted Sneakers & Streetwear Store');
   const { getSetting } = useCMS();
   const [activeTab, setActiveTab] = useState('story');
 
-  const siteName = getSetting('site_name') || 'KicksPlug';
+  const siteName = getSetting('site_name') || 'Adjetman Sneakers';
   const primaryColor = getSetting('primary_color') || '#059669';
 
   // CMS-driven content
@@ -20,9 +20,9 @@ export default function AboutPage() {
     'More than sneakers, it’s a lifestyle plug';
   const heroSubtitle =
     getSetting('about_hero_subtitle') ||
-    'KicksPlug is your trusted source for real sneakers and everyday pieces that keep your style sharp from head to toe.';
+    'Adjetman Sneakers is your trusted source for real sneakers and everyday pieces that keep your style sharp from head to toe.';
   const storyTitle =
-    getSetting('about_story_title') || 'From sneaker passion to KicksPlug';
+    getSetting('about_story_title') || 'From sneaker passion to Adjetman Sneakers';
   const storyContent = getSetting('about_story_content') || '';
   const storyImage = getSetting('about_story_image') || '/about.jpg';
   const founderName = getSetting('about_founder_name') || 'Founder';
@@ -153,7 +153,7 @@ export default function AboutPage() {
               <h3 className="text-3xl font-bold text-gray-900 mb-4">{mission1Title}</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
                 {mission1Content ||
-                  'We build every collection from the sneakers up. Classic pairs, everyday beaters and statement kicks are the heart of KicksPlug – everything else in the store is chosen to make those sneakers look and feel even better.'}
+                  'We build every collection from the sneakers up. Classic pairs, everyday beaters and statement kicks are the heart of Adjetman Sneakers – everything else in the store is chosen to make those sneakers look and feel even better.'}
               </p>
             </div>
             <div className="bg-amber-50 p-10 rounded-3xl border border-amber-100">

@@ -4,9 +4,9 @@ import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://localhost:3000';
-const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'My Store';
-const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Your one-stop online store for premium quality products.';
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://adjetmansneakers.vercel.app';
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Adjetman Sneakers';
+const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Adjetman Sneakers – your plug for authentic sneakers & streetwear in Ghana.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

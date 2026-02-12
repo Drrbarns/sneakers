@@ -16,7 +16,7 @@ export default function PaymentPage() {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [storeName, setStoreName] = useState('My Store');
+  const [storeName, setStoreName] = useState('Adjetman Sneakers');
 
   useEffect(() => {
     // Fetch store name

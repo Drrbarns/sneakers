@@ -21,7 +21,7 @@ export default function AdminLayout({
 
   // Module Filtering State
   const [enabledModules, setEnabledModules] = useState<string[]>([]);
-  const [storeName, setStoreName] = useState('My Store');
+  const [storeName, setStoreName] = useState('Adjetman Sneakers');
 
   useEffect(() => {
     async function checkAuth() {

@@ -14,7 +14,7 @@ interface TeamContact {
 }
 
 export default function ContactPage() {
-  usePageTitle('Contact KicksPlug – Sneakers & Orders Support');
+usePageTitle('Contact Adjetman Sneakers – Sneakers & Orders Support');
   const { getSetting, getSettingJSON } = useCMS();
   const [formData, setFormData] = useState({
     name: '',
@@ -76,8 +76,10 @@ export default function ContactPage() {
   };
 
   // CMS-driven config
-  const contactEmail = getSetting('contact_email') || 'support@standardstore.com';
-  const contactPhone = getSetting('contact_phone') || '0546014734';
+  const contactEmail =
+    getSetting('contact_email') || '233isrealadjetey@gmail.com';
+  const contactPhone =
+    getSetting('contact_phone') || '+233 53 471 2925';
   const contactAddress = getSetting('contact_address') || 'Accra, Ghana';
   const heroTitle = getSetting('contact_hero_title') || 'Talk to your sneaker plug';
   const heroSubtitle =

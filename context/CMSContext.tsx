@@ -182,12 +182,12 @@ export interface CMSContextType {
 // ── Defaults ───────────────────────────────────────────────────────
 export const defaultSettings: SiteSettings = {
     // General
-    site_name: 'StandardStore',
-    site_tagline: 'Premium Shopping Experience',
+    site_name: 'Adjetman Sneakers',
+    site_tagline: 'Your plug for authentic sneakers & drip',
     site_logo: '/logo.png',
     site_favicon: '/favicon.ico',
-    contact_email: 'support@standardstore.com',
-    contact_phone: '0546014734',
+    contact_email: '233isrealadjetey@gmail.com',
+    contact_phone: '+233 53 471 2925',
     contact_address: 'Accra, Ghana',
     social_facebook: '',
     social_instagram: '',

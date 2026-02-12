@@ -384,7 +384,7 @@ export default function PrivacyPage() {
                   <i className="ri-mail-line text-emerald-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <a href="mailto:privacy@premiumstore.com" className="text-emerald-700 hover:underline">privacy@premiumstore.com</a>
+                    <a href="mailto:233isrealadjetey@gmail.com" className="text-emerald-700 hover:underline">233isrealadjetey@gmail.com</a>
                   </div>
                 </div>
 
@@ -392,7 +392,7 @@ export default function PrivacyPage() {
                   <i className="ri-phone-line text-emerald-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
-                    <a href="tel:+233241234567" className="text-emerald-700 hover:underline">+233 24 123 4567</a>
+                    <a href="tel:+233534712925" className="text-emerald-700 hover:underline">+233 53 471 2925</a>
                   </div>
                 </div>
 
