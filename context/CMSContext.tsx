@@ -208,8 +208,8 @@ export const defaultSettings: SiteSettings = {
     footer_text: '#ffffff',
 
     // Hero
-    hero_headline: 'Premium Products, Direct to You',
-    hero_subheadline: 'Verified quality products at unbeatable prices.',
+    hero_headline: 'Walk with style, step with confidence',
+    hero_subheadline: 'Discover the perfect blend of comfort, style and quality. Our exclusive collections are designed to elevate your look and support every step.',
     hero_image: '/hero.jpg',
     hero_badge_label: 'Exclusive Offer',
     hero_badge_text: '25% Off',
