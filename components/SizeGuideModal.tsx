@@ -6,58 +6,27 @@ interface SizeGuideModalProps {
   category?: string;
 }
 
-export default function SizeGuideModal({ isOpen, onClose, category = 'General' }: SizeGuideModalProps) {
+export default function SizeGuideModal({ isOpen, onClose, category = 'Sneakers' }: SizeGuideModalProps) {
   if (!isOpen) return null;
 
   const sizeGuides: Record<string, any> = {
-    'Tops & Shirts': {
-      measurements: ['Chest', 'Waist', 'Length', 'Sleeve'],
+    'Sneakers': {
+      measurements: ['UK', 'EU', 'US Men', 'US Women', 'CM'],
       sizes: [
-        { size: 'XS', chest: '32-34', waist: '24-26', length: '26', sleeve: '31' },
-        { size: 'S', chest: '34-36', waist: '26-28', length: '27', sleeve: '32' },
-        { size: 'M', chest: '38-40', waist: '30-32', length: '28', sleeve: '33' },
-        { size: 'L', chest: '42-44', waist: '34-36', length: '29', sleeve: '34' },
-        { size: 'XL', chest: '46-48', waist: '38-40', length: '30', sleeve: '35' },
-        { size: '2XL', chest: '50-52', waist: '42-44', length: '31', sleeve: '36' },
-      ]
-    },
-    'Bottoms': {
-      measurements: ['Waist', 'Hip', 'Inseam', 'Outseam'],
-      sizes: [
-        { size: '26', waist: '26', hip: '36', inseam: '30', outseam: '40' },
-        { size: '28', waist: '28', hip: '38', inseam: '30', outseam: '40' },
-        { size: '30', waist: '30', hip: '40', inseam: '32', outseam: '42' },
-        { size: '32', waist: '32', hip: '42', inseam: '32', outseam: '42' },
-        { size: '34', waist: '34', hip: '44', inseam: '32', outseam: '42' },
-        { size: '36', waist: '36', hip: '46', inseam: '32', outseam: '42' },
-      ]
-    },
-    'Shoes': {
-      measurements: ['UK', 'EU', 'US', 'CM'],
-      sizes: [
-        { size: '5', uk: '5', eu: '38', us: '6', cm: '23.5' },
-        { size: '6', uk: '6', eu: '39', us: '7', cm: '24.5' },
-        { size: '7', uk: '7', eu: '40-41', us: '8', cm: '25.5' },
-        { size: '8', uk: '8', eu: '42', us: '9', cm: '26.5' },
-        { size: '9', uk: '9', eu: '43', us: '10', cm: '27.5' },
-        { size: '10', uk: '10', eu: '44-45', us: '11', cm: '28.5' },
-        { size: '11', uk: '11', eu: '46', us: '12', cm: '29.5' },
-      ]
-    },
-    'General': {
-      measurements: ['Chest', 'Waist', 'Hip'],
-      sizes: [
-        { size: 'XS', chest: '32-34', waist: '24-26', hip: '34-36' },
-        { size: 'S', chest: '34-36', waist: '26-28', hip: '36-38' },
-        { size: 'M', chest: '38-40', waist: '30-32', hip: '40-42' },
-        { size: 'L', chest: '42-44', waist: '34-36', hip: '44-46' },
-        { size: 'XL', chest: '46-48', waist: '38-40', hip: '48-50' },
-        { size: '2XL', chest: '50-52', waist: '42-44', hip: '52-54' },
+        { size: '37', uk: '4', eu: '37', 'us men': '5', 'us women': '6.5', cm: '23' },
+        { size: '38', uk: '5', eu: '38', 'us men': '6', 'us women': '7.5', cm: '24' },
+        { size: '39', uk: '6', eu: '39', 'us men': '7', 'us women': '8.5', cm: '24.5' },
+        { size: '40', uk: '6.5', eu: '40', 'us men': '7.5', 'us women': '9', cm: '25' },
+        { size: '41', uk: '7', eu: '41', 'us men': '8', 'us women': '9.5', cm: '26' },
+        { size: '42', uk: '8', eu: '42', 'us men': '9', 'us women': '10.5', cm: '26.5' },
+        { size: '43', uk: '9', eu: '43', 'us men': '10', 'us women': '11.5', cm: '27.5' },
+        { size: '44', uk: '10', eu: '44', 'us men': '11', 'us women': '12.5', cm: '28' },
+        { size: '45', uk: '11', eu: '45', 'us men': '12', 'us women': '13.5', cm: '29' },
       ]
     }
   };
 
-  const guide = sizeGuides[category] || sizeGuides['General'];
+  const guide = sizeGuides[category] || sizeGuides['Sneakers'];
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -85,12 +54,12 @@ export default function SizeGuideModal({ isOpen, onClose, category = 'General' }
                   <i className="ri-information-line text-xl text-blue-600"></i>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-blue-900 mb-2">How to Measure</h3>
+                  <h3 className="font-semibold text-blue-900 mb-2">How to Find Your Size</h3>
                   <ul className="text-sm text-blue-800 space-y-1">
-                    <li>• Use a soft measuring tape for accurate measurements</li>
-                    <li>• Measure over light clothing or undergarments</li>
-                    <li>• Keep the tape parallel to the floor</li>
-                    <li>• Take measurements at the fullest part of each area</li>
+                    <li>• Stand on a piece of paper and trace your foot</li>
+                    <li>• Measure from heel to longest toe in centimetres</li>
+                    <li>• Match your measurement to the CM column below</li>
+                    <li>• If between sizes, we recommend going half a size up</li>
                   </ul>
                 </div>
               </div>
@@ -103,7 +72,7 @@ export default function SizeGuideModal({ isOpen, onClose, category = 'General' }
                     <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-900">Size</th>
                     {guide.measurements.map((measurement: string) => (
                       <th key={measurement} className="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-900">
-                        {measurement} (inches)
+                        {measurement}
                       </th>
                     ))}
                   </tr>
@@ -132,13 +101,13 @@ export default function SizeGuideModal({ isOpen, onClose, category = 'General' }
                   <div className="w-6 h-6 flex items-center justify-center mr-2">
                     <i className="ri-ruler-line text-emerald-700"></i>
                   </div>
-                  Measurement Tips
+                  Sizing Tips
                 </h4>
                 <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• <strong>Chest:</strong> Measure around the fullest part</li>
-                  <li>• <strong>Waist:</strong> Measure around natural waistline</li>
-                  <li>• <strong>Hip:</strong> Measure around the fullest part</li>
-                  <li>• <strong>Inseam:</strong> Measure from crotch to ankle</li>
+                  <li>• <strong>Foot length:</strong> Measure in the afternoon when feet are slightly larger</li>
+                  <li>• <strong>Width:</strong> Some brands run narrow — check product descriptions</li>
+                  <li>• <strong>Socks:</strong> Wear the socks you plan to use when measuring</li>
+                  <li>• <strong>Both feet:</strong> Measure both and use the larger measurement</li>
                 </ul>
               </div>
 

@@ -59,7 +59,7 @@ export default function ProductForm({ initialData, isEditMode = false }: Product
         { name: 'Gold', hex: '#D4AF37' },
         { name: 'Silver', hex: '#C0C0C0' },
     ];
-    const sizePresets = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+    const sizePresets = ['37', '38', '39', '40', '41', '42', '43', '44', '45'];
 
     // Parse existing variants to extract unique colors and sizes
     const existingVariants = (initialData?.product_variants || []).map((v: any) => ({
@@ -786,7 +786,7 @@ export default function ProductForm({ initialData, isEditMode = false }: Product
                                         </span>
                                     )}
                                 </h4>
-                                <p className="text-xs text-gray-500 mb-4">Click sizes to add/remove. Use custom for volumes (100ml), weights, etc.</p>
+                                <p className="text-xs text-gray-500 mb-4">Click sizes to add/remove. Use custom to add other UK sizes.</p>
 
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     {sizePresets.map(size => {
